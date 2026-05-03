@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Add your canonical sitemap URL when the site is on a fixed domain, e.g.:
+# Sitemap: https://www.example.com/sitemap.xml

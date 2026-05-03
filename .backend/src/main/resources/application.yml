@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: sports-ecommerce-backend
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/sports_ecommerce}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+  cache:
+    type: simple
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+app:
+  jwt:
+    issuer: sports-ecommerce
+    secret: ${JWT_SECRET:supersecretkeyforphaseonealignmentmustbe32chars}
+    access-token-expiry-seconds: 3600
+    refresh-token-expiry-seconds: 1209600
+  cors:
+    # Comma-separated origin patterns (env CORS_ALLOWED_ORIGIN_PATTERNS). Blank = localhost defaults in Java.
+    allowed-origin-patterns: ${CORS_ALLOWED_ORIGIN_PATTERNS:}
+  security:
+    rate-limit:
+      requests: ${RATE_LIMIT_REQUESTS:120}
+      window-seconds: ${RATE_LIMIT_WINDOW_SECONDS:60}
+  upload:
+    profile-dir: ${PROFILE_UPLOAD_DIR:uploads/profile}

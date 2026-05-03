@@ -1,0 +1,27 @@
+---
+description: General project rules for Sports Equipment E-commerce
+alwaysApply: true
+---
+
+## Project Overview
+- Project: Sports Equipment E-commerce
+- Goal: Production-ready full-stack system
+- Architecture: Clean architecture (Controller → Service → Repository)
+
+## Coding Standards
+- Write clean, readable, maintainable code
+- Follow SOLID principles
+- Use meaningful variable and function names
+- Avoid code duplication
+- Add comments for complex logic
+
+## Best Practices
+- Always include error handling
+- Validate user inputs
+- Follow REST API conventions
+- Keep functions small and focused
+
+## Output Expectations
+- Generate production-ready code
+- Avoid unnecessary complexity
+- Prefer clarity over cleverness

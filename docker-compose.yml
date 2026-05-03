@@ -1,0 +1,70 @@
+services:
+  db:
+    # Flyway in current backend stack is not compatible with MySQL 8.4 yet.
+    # Use MySQL 8.0 to keep migrations stable.
+    # AWS Public ECR mirrors the official image; use when Docker Hub (auth.docker.io) cannot be resolved on pull.
+    image: public.ecr.aws/docker/library/mysql:8.0
+    networks:
+      - sports-network
+    environment:
+      MYSQL_DATABASE: sports_ecommerce
+      # Must match healthcheck (-p…) and backend DB_PASSWORD. If you change this, run: docker compose down -v
+      MYSQL_ROOT_PASSWORD: root
+    # Use 3307 on the host if local MySQL (or another app) already uses 3306.
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  backend:
+    build:
+      context: ./.backend
+      # If builds fail with "lookup … no such host", Docker DNS is broken. Prefer Docker Engine:
+      # "dns": ["8.8.8.8","8.8.4.4"] (Docker Desktop → Settings → Docker Engine). IPs may need refresh.
+      extra_hosts:
+        - "auth.docker.io:104.18.43.178"
+        - "registry-1.docker.io:50.19.60.231"
+        - "repo.maven.apache.org:104.18.19.12"
+    networks:
+      - sports-network
+    environment:
+      DB_URL: jdbc:mysql://db:3306/sports_ecommerce
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      JWT_SECRET: supersecretkeyforphaseonealignmentmustbe32chars
+      # Browser API http://localhost:8080; Vite dev http://localhost:5173; Docker nginx UI http://localhost:3000
+      CORS_ALLOWED_ORIGIN_PATTERNS: http://localhost:*,http://127.0.0.1:*
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+
+  frontend:
+    build:
+      context: ./.frontend
+      extra_hosts:
+        - "auth.docker.io:104.18.43.178"
+        - "registry-1.docker.io:50.19.60.231"
+        - "registry.npmjs.org:104.16.0.34"
+    networks:
+      - sports-network
+    ports:
+      # Host 3000 avoids clashing with local `npm run dev` (Vite on 5173).
+      - "3000:80"
+    depends_on:
+      - backend
+
+networks:
+  sports-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

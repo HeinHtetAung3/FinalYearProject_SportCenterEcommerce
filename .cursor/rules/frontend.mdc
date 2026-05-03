@@ -1,0 +1,49 @@
+---
+description: Frontend rules for React ecommerce UI
+alwaysApply: false
+---
+
+## Tech Stack
+- React (Vite)
+- JavaScript (or TypeScript optional)
+- Tailwind CSS
+- Axios
+
+## Structure
+- pages/
+- components/
+- api/
+- context/
+
+## Component Rules
+- Use functional components
+- Use React hooks (useState, useEffect)
+- Keep components small and reusable
+
+## UI/UX
+- Modern ecommerce design (Nike/Adidas style)
+- Responsive (mobile-first)
+- Clean layout with spacing and shadows
+- Use grid system for products
+
+## State Management
+- Use Context API (or Redux Toolkit)
+- Global state for cart and auth
+
+## API Integration
+- Use axios instance
+- Handle:
+  - loading state
+  - error state
+
+## Features
+- Product list with filters
+- Product detail page
+- Cart system
+- Login/Register
+- Wishlist
+
+## Code Quality
+- Avoid inline logic in JSX
+- Separate logic and UI
+- Reuse components

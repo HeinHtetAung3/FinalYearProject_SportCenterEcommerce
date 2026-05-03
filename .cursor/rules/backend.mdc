@@ -1,0 +1,60 @@
+---
+description: Backend rules for Spring Boot ecommerce system
+alwaysApply: false
+---
+
+## Tech Stack
+- Java 21
+- Spring Boot
+- Spring Data JPA
+- MySQL
+- Spring Security (JWT)
+
+## Architecture
+- Controller → Service → Repository
+- Use DTO pattern (never expose entities)
+- Use ServiceImpl for business logic
+
+## Entities
+- User
+- Product
+- Category
+- Cart
+- CartItem
+- Order
+- OrderItem
+- Review
+- Wishlist
+
+## Backend Rules
+- Use @Entity for models
+- Use @RestController for APIs
+- Use @Service for business logic
+- Use @Repository for data access
+- Use Lombok to reduce boilerplate
+
+## API Design
+- Use RESTful endpoints (/api/products)
+- Return ResponseEntity
+- Use proper HTTP status codes
+
+## Validation
+- Use @Valid in controllers
+- Use annotations:
+  - @NotBlank
+  - @Positive
+  - @Email
+
+## Security
+- Use JWT authentication
+- Encrypt passwords using BCrypt
+- Protect endpoints based on roles
+
+## Performance
+- Use pagination (Pageable)
+- Avoid N+1 queries
+- Optimize queries when needed
+
+## Error Handling
+- Use @RestControllerAdvice
+- Return structured JSON errors
