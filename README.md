@@ -334,7 +334,3 @@ Final Year Project — Sports Equipment E-Commerce
 Developed by **HeinHtetAung3** and contributors.
 
 ---
-
-## License
-
-This project is provided for academic and portfolio use. Add an explicit license file if you intend to open-source or commercially distribute the codebase.
