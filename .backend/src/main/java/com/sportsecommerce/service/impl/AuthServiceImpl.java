@@ -9,6 +9,7 @@ import com.sportsecommerce.repository.RefreshTokenJpaRepository;
 import com.sportsecommerce.repository.UserJpaRepository;
 import com.sportsecommerce.security.JwtService;
 import com.sportsecommerce.service.AuthService;
+import com.sportsecommerce.service.PasswordPolicyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,17 +30,20 @@ public class AuthServiceImpl implements AuthService {
     private final UserJpaRepository userJpaRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final PasswordPolicyService passwordPolicyService;
 
     public AuthServiceImpl(
             RefreshTokenJpaRepository refreshTokenJpaRepository,
             UserJpaRepository userJpaRepository,
             JwtService jwtService,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            PasswordPolicyService passwordPolicyService
     ) {
         this.refreshTokenJpaRepository = refreshTokenJpaRepository;
         this.userJpaRepository = userJpaRepository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.passwordPolicyService = passwordPolicyService;
     }
 
     @Override
@@ -49,6 +53,7 @@ public class AuthServiceImpl implements AuthService {
         if (userJpaRepository.findByEmailIgnoreCase(email).isPresent()) {
             throw new ApiException(HttpStatus.CONFLICT, "Email is already registered");
         }
+        passwordPolicyService.assertAcceptablePassword(request.password());
         UserEntity user = new UserEntity();
         user.setEmail(email);
         user.setFullName(request.fullName().trim());

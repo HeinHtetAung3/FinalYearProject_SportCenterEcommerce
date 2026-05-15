@@ -2,6 +2,7 @@ package com.sportsecommerce.controller;
 
 import com.sportsecommerce.dto.AdminDtos;
 import com.sportsecommerce.dto.AuthDtos;
+import com.sportsecommerce.dto.CatalogDtos;
 import com.sportsecommerce.dto.CommerceDtos;
 import com.sportsecommerce.service.AdminService;
 import jakarta.validation.Valid;
@@ -62,5 +63,13 @@ public class AdminController {
     @GetMapping("/metrics")
     public ResponseEntity<AdminDtos.DashboardMetricsResponse> metrics() {
         return ResponseEntity.ok(adminService.getMetrics());
+    }
+
+    /**
+     * Full catalog for admin (includes hidden / disabled SKUs). Storefront uses {@code GET /api/products}.
+     */
+    @GetMapping("/products")
+    public ResponseEntity<List<CatalogDtos.ProductResponse>> listProducts() {
+        return ResponseEntity.ok(adminService.listProducts());
     }
 }

@@ -41,7 +41,8 @@ public final class CatalogDtos {
             String subcategory,
             boolean newArrival,
             boolean bestSeller,
-            BigDecimal compareAtPrice
+            BigDecimal compareAtPrice,
+            boolean storefrontVisible
     ) {
     }
 

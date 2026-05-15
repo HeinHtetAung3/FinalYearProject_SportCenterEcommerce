@@ -15,7 +15,9 @@ function CategoryCard({ category, large = false }) {
         src={category.image}
         alt={category.title}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover opacity-90 transition duration-700 ease-out group-hover:scale-110"
+        decoding="async"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className="absolute inset-0 h-full w-full object-cover object-center opacity-90 transition duration-700 ease-out group-hover:scale-110"
       />
       <div className="absolute inset-0 bg-gradient-to-tr from-ink-950/80 via-ink-950/30 to-transparent" />
       <div className="relative flex h-full flex-col justify-end p-6 text-white sm:p-8">

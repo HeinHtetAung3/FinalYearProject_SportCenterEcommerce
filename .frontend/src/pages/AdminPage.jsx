@@ -63,7 +63,8 @@ function emptyProductForm(categories = []) {
     subcategory: '',
     sizesText: '',
     colorsText: '',
-    imagesText: ''
+    imagesText: '',
+    storefrontVisible: true
   };
 }
 
@@ -80,7 +81,8 @@ function productToForm(product) {
     subcategory: product.subcategory || '',
     sizesText: Array.isArray(product.sizes) ? product.sizes.join(', ') : '',
     colorsText: Array.isArray(product.colors) ? product.colors.join(', ') : '',
-    imagesText: Array.isArray(product.images) ? product.images.join('\n') : ''
+    imagesText: Array.isArray(product.images) ? product.images.join('\n') : '',
+    storefrontVisible: product.storefrontVisible !== false
   };
 }
 
@@ -172,7 +174,8 @@ function ProductEditorSheet({ mode, product, categories, onClose, onSaved }) {
       subcategory: fields.subcategory.trim() || null,
       sizes: parseEuSizesFromForm(fields.sizesText),
       colors: parseDelimitedStrings(fields.colorsText),
-      images: parseImageLines(fields.imagesText)
+      images: parseImageLines(fields.imagesText),
+      storefrontVisible: Boolean(fields.storefrontVisible)
     };
     setSaving(true);
     try {
@@ -288,7 +291,21 @@ function ProductEditorSheet({ mode, product, categories, onClose, onSaved }) {
               <span className="text-2xs font-semibold uppercase tracking-wider text-ink-500">
                 Primary image URL
               </span>
-              <input className="input-base mt-1" value={fields.imageUrl} onChange={(e) => updateField('imageUrl', e.target.value)} placeholder="https://…" />
+              <input
+                className="input-base mt-1"
+                value={fields.imageUrl}
+                onChange={(e) => updateField('imageUrl', e.target.value)}
+                placeholder="/images/products/…"
+              />
+            </label>
+            <label className="flex items-center gap-2 sm:col-span-2">
+              <input
+                type="checkbox"
+                className="h-4 w-4 rounded border-ink-300"
+                checked={fields.storefrontVisible}
+                onChange={(e) => updateField('storefrontVisible', e.target.checked)}
+              />
+              <span className="text-sm text-ink-700">Visible on storefront</span>
             </label>
             <label className="block">
               <span className="text-2xs font-semibold uppercase tracking-wider text-ink-500">Brand</span>
@@ -875,6 +892,11 @@ function ProductsTable({
                       <div>
                         <p className="font-semibold text-ink-900">{product.name}</p>
                         <p className="text-xs text-ink-500">SKU SH-{product.id}</p>
+                        {product.storefrontVisible === false ? (
+                          <Badge variant="outline" className="mt-1">
+                            Hidden from storefront
+                          </Badge>
+                        ) : null}
                       </div>
                     </div>
                   </td>

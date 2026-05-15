@@ -8,12 +8,14 @@ import com.sportsecommerce.entity.SystemSettingsEntity;
 import com.sportsecommerce.exception.ApiException;
 import com.sportsecommerce.repository.SystemSettingsJpaRepository;
 import com.sportsecommerce.service.AdminSettingsService;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +27,18 @@ public class AdminSettingsServiceImpl implements AdminSettingsService {
     private final SystemSettingsJpaRepository repository;
     private final ObjectMapper objectMapper;
     private final SystemSettingsCryptoService cryptoService;
+    private final CacheManager cacheManager;
 
     public AdminSettingsServiceImpl(
             SystemSettingsJpaRepository repository,
             ObjectMapper objectMapper,
-            SystemSettingsCryptoService cryptoService
+            SystemSettingsCryptoService cryptoService,
+            CacheManager cacheManager
     ) {
         this.repository = repository;
         this.objectMapper = objectMapper;
         this.cryptoService = cryptoService;
+        this.cacheManager = cacheManager;
     }
 
     @Override
@@ -45,17 +50,123 @@ public class AdminSettingsServiceImpl implements AdminSettingsService {
     @Override
     @Transactional
     public AdminSettingsDtos.SystemSettingsResponse updateSettings(AdminSettingsDtos.UpdateSystemSettingsRequest request) {
-        validateBusinessRules(request);
         SystemSettingsEntity entity = loadOrCreateSettings();
+        validateShipping(request.shipping());
+        validatePaymentModes(request.payments(), request.payments().stripeSecretKey(), entity);
+        validateStripe(request.payments(), entity);
         apply(entity, request);
         SystemSettingsEntity saved = repository.save(entity);
+        invalidateSettingsCache();
         return toResponse(saved);
     }
 
-    private void validateBusinessRules(AdminSettingsDtos.UpdateSystemSettingsRequest request) {
-        if (request.shipping().freeShippingThreshold().compareTo(request.shipping().flatShippingFee()) < 0) {
+    @Override
+    @Transactional
+    public AdminSettingsDtos.SystemSettingsResponse updatePayments(AdminSettingsDtos.PaymentSettingsUpdateRequest request) {
+        SystemSettingsEntity entity = loadOrCreateSettings();
+        validatePaymentModes(request, request.stripeSecretKey(), entity);
+        validateStripe(request, entity);
+        applyPayments(entity, request);
+        SystemSettingsEntity saved = repository.save(entity);
+        invalidateSettingsCache();
+        return toResponse(saved);
+    }
+
+    @Override
+    @Transactional
+    public AdminSettingsDtos.SystemSettingsResponse resetToDefaults() {
+        SystemSettingsEntity current = loadOrCreateSettings();
+        Instant createdAt = current.getCreatedAt();
+        SystemSettingsEntity fresh = defaultSettings();
+        fresh.setId(SETTINGS_ID);
+        if (createdAt != null) {
+            fresh.setCreatedAt(createdAt);
+        }
+        SystemSettingsEntity saved = repository.save(fresh);
+        invalidateSettingsCache();
+        return toResponse(saved);
+    }
+
+    private void invalidateSettingsCache() {
+        var cache = cacheManager.getCache("systemSettings");
+        if (cache != null) {
+            cache.invalidate();
+        }
+    }
+
+    private void validateShipping(AdminSettingsDtos.ShippingSettings shipping) {
+        if (shipping.freeShippingThreshold().compareTo(shipping.flatShippingFee()) < 0) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Free shipping threshold cannot be lower than flat shipping fee");
         }
+    }
+
+    private void validatePaymentModes(
+            AdminSettingsDtos.PaymentSettingsUpdateRequest payments,
+            String incomingSecret,
+            SystemSettingsEntity current
+    ) {
+        boolean stripeReady = stripeReadyAfterApply(payments, incomingSecret, current);
+        boolean any = payments.creditCardEnabled()
+                || payments.cashOnDeliveryEnabled()
+                || (payments.stripeEnabled() && stripeReady);
+        if (!any) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "At least one usable payment method must remain enabled");
+        }
+    }
+
+    private void validateStripe(
+            AdminSettingsDtos.PaymentSettingsUpdateRequest payments,
+            SystemSettingsEntity entityBeforeApply
+    ) {
+        if (!payments.stripeEnabled()) {
+            return;
+        }
+        String pk = payments.stripePublicKey();
+        if (pk == null || pk.isBlank()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Stripe public key is required when Stripe is enabled");
+        }
+        if (!stripePublicKeyLooksValid(pk)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Stripe public key must start with pk_test_ or pk_live_");
+        }
+        boolean secretIncoming = payments.stripeSecretKey() != null && !payments.stripeSecretKey().isBlank();
+        boolean secretStored = entityBeforeApply.getStripeSecretEncrypted() != null
+                && !entityBeforeApply.getStripeSecretEncrypted().isBlank();
+        if (!secretIncoming && !secretStored) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Stripe secret key must be configured when Stripe is enabled");
+        }
+        if (secretIncoming && !stripeSecretKeyLooksValid(payments.stripeSecretKey())) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Stripe secret key must start with sk_test_ or sk_live_");
+        }
+    }
+
+    private boolean stripeReadyAfterApply(
+            AdminSettingsDtos.PaymentSettingsUpdateRequest payments,
+            String incomingSecret,
+            SystemSettingsEntity current
+    ) {
+        if (!payments.stripeEnabled()) {
+            return false;
+        }
+        String pk = payments.stripePublicKey();
+        if (!stripePublicKeyLooksValid(pk)) {
+            return false;
+        }
+        boolean secretOk = (incomingSecret != null && !incomingSecret.isBlank())
+                || (current.getStripeSecretEncrypted() != null && !current.getStripeSecretEncrypted().isBlank());
+        return secretOk;
+    }
+
+    private static boolean stripePublicKeyLooksValid(String pk) {
+        if (pk == null || pk.isBlank()) {
+            return false;
+        }
+        String t = pk.trim();
+        return t.startsWith("pk_test_") || t.startsWith("pk_live_");
+    }
+
+    private static boolean stripeSecretKeyLooksValid(String sk) {
+        String t = sk.trim();
+        return t.startsWith("sk_test_") || t.startsWith("sk_live_");
     }
 
     private void apply(SystemSettingsEntity entity, AdminSettingsDtos.UpdateSystemSettingsRequest request) {
@@ -73,16 +184,12 @@ public class AdminSettingsServiceImpl implements AdminSettingsService {
         entity.setDefaultCurrency(general.defaultCurrency().trim().toUpperCase());
         entity.setDefaultLanguage(general.defaultLanguage().trim().toLowerCase());
 
-        entity.setPaymentCreditCardEnabled(payments.creditCardEnabled());
-        entity.setPaymentCodEnabled(payments.cashOnDeliveryEnabled());
-        entity.setPaymentStripeEnabled(payments.stripeEnabled());
-        entity.setStripePublicKey(blankToNull(payments.stripePublicKey()));
-        if (payments.stripeSecretKey() != null && !payments.stripeSecretKey().isBlank()) {
-            entity.setStripeSecretEncrypted(cryptoService.encrypt(payments.stripeSecretKey().trim()));
-        }
+        applyPayments(entity, payments);
 
+        entity.setShippingEnabled(shipping.shippingEnabled());
         entity.setShippingFee(scaleMoney(shipping.flatShippingFee()));
         entity.setFreeShippingThreshold(scaleMoney(shipping.freeShippingThreshold()));
+        entity.setExpressShippingSurcharge(scaleMoney(shipping.expressShippingSurcharge()));
         entity.setDeliveryRegionsJson(writeJson(normalizeRegions(shipping.deliveryRegions())));
         entity.setEstimatedDeliveryTime(shipping.estimatedDeliveryTime().trim());
 
@@ -106,7 +213,22 @@ public class AdminSettingsServiceImpl implements AdminSettingsService {
         entity.setJwtExpirationMinutes(security.jwtExpirationMinutes());
     }
 
+    private void applyPayments(SystemSettingsEntity entity, AdminSettingsDtos.PaymentSettingsUpdateRequest payments) {
+        entity.setPaymentCreditCardEnabled(payments.creditCardEnabled());
+        entity.setPaymentCodEnabled(payments.cashOnDeliveryEnabled());
+        entity.setPaymentStripeEnabled(payments.stripeEnabled());
+        entity.setStripePublicKey(blankToNull(payments.stripePublicKey()));
+        if (payments.stripeSecretKey() != null && !payments.stripeSecretKey().isBlank()) {
+            entity.setStripeSecretEncrypted(cryptoService.encrypt(payments.stripeSecretKey().trim()));
+        }
+    }
+
     private AdminSettingsDtos.SystemSettingsResponse toResponse(SystemSettingsEntity entity) {
+        boolean stripeSecretConfigured = entity.getStripeSecretEncrypted() != null
+                && !entity.getStripeSecretEncrypted().isBlank();
+        boolean stripeReady = entity.isPaymentStripeEnabled()
+                && stripePublicKeyLooksValid(entity.getStripePublicKey())
+                && stripeSecretConfigured;
         return new AdminSettingsDtos.SystemSettingsResponse(
                 new AdminSettingsDtos.GeneralSettings(
                         entity.getStoreName(),
@@ -120,11 +242,14 @@ public class AdminSettingsServiceImpl implements AdminSettingsService {
                         entity.isPaymentCodEnabled(),
                         entity.isPaymentStripeEnabled(),
                         entity.getStripePublicKey(),
-                        entity.getStripeSecretEncrypted() != null && !entity.getStripeSecretEncrypted().isBlank()
+                        stripeSecretConfigured,
+                        stripeReady
                 ),
                 new AdminSettingsDtos.ShippingSettings(
+                        entity.isShippingEnabled(),
                         entity.getShippingFee(),
                         entity.getFreeShippingThreshold(),
+                        entity.getExpressShippingSurcharge(),
                         readRegions(entity.getDeliveryRegionsJson()),
                         entity.getEstimatedDeliveryTime()
                 ),
@@ -160,7 +285,9 @@ public class AdminSettingsServiceImpl implements AdminSettingsService {
 
     private SystemSettingsEntity createDefaultSettings() {
         SystemSettingsEntity defaults = defaultSettings();
-        return repository.save(defaults);
+        SystemSettingsEntity saved = repository.save(defaults);
+        invalidateSettingsCache();
+        return saved;
     }
 
     private SystemSettingsEntity defaultSettings() {
@@ -173,8 +300,10 @@ public class AdminSettingsServiceImpl implements AdminSettingsService {
         entity.setPaymentCreditCardEnabled(true);
         entity.setPaymentCodEnabled(true);
         entity.setPaymentStripeEnabled(false);
+        entity.setShippingEnabled(true);
         entity.setShippingFee(new BigDecimal("8.99"));
         entity.setFreeShippingThreshold(new BigDecimal("80.00"));
+        entity.setExpressShippingSurcharge(new BigDecimal("12.99"));
         entity.setDeliveryRegionsJson(writeJson(List.of("United States")));
         entity.setEstimatedDeliveryTime("3-5 business days");
         entity.setTaxRate(new BigDecimal("7.00"));

@@ -55,7 +55,8 @@ public final class AdminSettingsDtos {
             boolean cashOnDeliveryEnabled,
             boolean stripeEnabled,
             String stripePublicKey,
-            boolean stripeSecretConfigured
+            boolean stripeSecretConfigured,
+            boolean stripeReady
     ) {
     }
 
@@ -69,8 +70,10 @@ public final class AdminSettingsDtos {
     }
 
     public record ShippingSettings(
+            boolean shippingEnabled,
             @NotNull @DecimalMin("0.00") @DecimalMax("999999.99") BigDecimal flatShippingFee,
             @NotNull @DecimalMin("0.00") @DecimalMax("999999.99") BigDecimal freeShippingThreshold,
+            @NotNull @DecimalMin("0.00") @DecimalMax("999999.99") BigDecimal expressShippingSurcharge,
             @NotEmpty List<@NotBlank @Size(max = 120) String> deliveryRegions,
             @NotBlank @Size(max = 120) String estimatedDeliveryTime
     ) {

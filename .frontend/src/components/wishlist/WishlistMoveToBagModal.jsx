@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Button from '../ui/Button';
 import { IconClose, IconRuler } from '../ui/Icon';
 import SizeGuideModal from '../products/SizeGuideModal';
+import ProductImage from '../products/ProductImage';
 import { classNames } from '../../utils/format';
 
 const COLOR_KEYWORDS = [
@@ -200,10 +201,14 @@ function WishlistMoveToBagModal({ open, onClose, wishlistItem, product, onConfir
         <div className="relative flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl bg-white shadow-card animate-slide-down sm:rounded-3xl">
           <div className="flex items-start gap-4 border-b border-ink-100 px-5 py-4 sm:px-6">
             <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-ink-100">
-              <img
-                src={wishlistItem.imageUrl || product.imageUrl}
-                alt=""
-                className="h-full w-full object-cover"
+              <ProductImage
+                product={{
+                  ...product,
+                  name: wishlistItem.productName || product.name,
+                  imageUrl: wishlistItem.imageUrl || product.imageUrl
+                }}
+                className="h-full w-full"
+                rounded="rounded-2xl"
               />
             </div>
             <div className="min-w-0 flex-1">

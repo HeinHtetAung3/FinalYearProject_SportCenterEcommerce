@@ -43,4 +43,7 @@ public interface CatalogRepository {
 
     /** Total SKUs in the catalog (for storefront hero stats). */
     long countProducts();
+
+    /** SKUs visible on the storefront (excludes hidden / disabled). */
+    long countStorefrontProducts();
 }

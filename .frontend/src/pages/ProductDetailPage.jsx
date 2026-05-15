@@ -23,6 +23,7 @@ import ImageLightbox from '../components/products/ImageLightbox';
 import StickyMobileCTA from '../components/products/StickyMobileCTA';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useCommerceConfig } from '../context/CommerceConfigContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useUI } from '../context/UIContext';
 import { fetchProductById, fetchRelatedProducts } from '../services/catalogService';
@@ -44,7 +45,8 @@ function ProductDetailPage() {
   const { isAuthenticated } = useAuth();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { showAddedToBag } = useUI();
-
+  const { config: commerce } = useCommerceConfig();
+  const reviewsEnabled = commerce?.reviewsEnabled !== false;
   const [product, setProduct] = useState(null);
   const [gallery, setGallery] = useState([]);
   const [activeImage, setActiveImage] = useState(0);
@@ -74,6 +76,21 @@ function ProductDetailPage() {
   const [personalizedAds, setPersonalizedAds] = useState(true);
   const [dataSharing, setDataSharing] = useState(true);
   const [catalogTick, setCatalogTick] = useState(0);
+
+  const detailTabs = useMemo(() => {
+    const tabs = [{ key: 'description', label: 'Details' }];
+    if (reviewsEnabled) {
+      tabs.push({ key: 'reviews', label: `Reviews (${reviews.length})` });
+    }
+    tabs.push({ key: 'shipping', label: 'Shipping & returns' });
+    return tabs;
+  }, [reviews.length, reviewsEnabled]);
+
+  useEffect(() => {
+    if (!reviewsEnabled && activeTab === 'reviews') {
+      setActiveTab('description');
+    }
+  }, [reviewsEnabled, activeTab]);
 
   const ctaRef = useRef(null);
 
@@ -452,11 +469,7 @@ function ProductDetailPage() {
       <section className="mt-20">
         <div className="border-b border-ink-100 dark:border-ink-800">
           <div className="flex gap-6 overflow-x-auto scrollbar-none">
-            {[
-              { key: 'description', label: 'Details' },
-              { key: 'reviews', label: `Reviews (${reviews.length})` },
-              { key: 'shipping', label: 'Shipping & returns' }
-            ].map((tab) => (
+            {detailTabs.map((tab) => (
               <button
                 key={tab.key}
                 type="button"
@@ -727,22 +740,26 @@ function ProductGallery({ images, activeIndex, onSelect, onOpenLightbox, alt }) 
   };
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[6.25rem_1fr]">
-      <div className="order-2 flex gap-3 overflow-x-auto lg:order-1 lg:flex-col">
+    <div className="grid gap-4 lg:grid-cols-[7rem_1fr] lg:gap-6">
+      <div className="order-2 flex gap-3 overflow-x-auto pb-1 lg:order-1 lg:flex-col lg:overflow-y-auto lg:pb-0">
         {safeImages.map((url, index) => (
           <button
             key={url + index}
             type="button"
             onClick={() => onSelect(index)}
             className={classNames(
-              'relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border-2 transition',
+              'group/thumb relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border-2 transition sm:h-24 sm:w-24 lg:h-28 lg:w-28',
               index === activeIndex
-                ? 'border-ink-950 dark:border-white'
+                ? 'border-ink-950 ring-2 ring-ink-950/10 dark:border-white dark:ring-white/20'
                 : 'border-transparent hover:border-ink-200 dark:hover:border-ink-600'
             )}
             aria-label={`View image ${index + 1}`}
           >
-            <img src={url} alt="" className="h-full w-full object-cover" />
+            <img
+              src={url}
+              alt=""
+              className="h-full w-full object-cover object-center transition duration-500 ease-out group-hover/thumb:scale-110"
+            />
           </button>
         ))}
       </div>
@@ -751,7 +768,7 @@ function ProductGallery({ images, activeIndex, onSelect, onOpenLightbox, alt }) 
         onMouseEnter={() => setZooming(true)}
         onMouseLeave={() => setZooming(false)}
         onMouseMove={handleMove}
-        className="order-1 relative aspect-square overflow-hidden rounded-3xl bg-white shadow-soft dark:bg-ink-900 lg:order-2"
+        className="order-1 relative aspect-square min-h-[280px] overflow-hidden rounded-3xl bg-ink-50 shadow-card dark:bg-ink-900 sm:min-h-[360px] lg:order-2 lg:min-h-[420px]"
       >
         <button
           type="button"
@@ -762,6 +779,7 @@ function ProductGallery({ images, activeIndex, onSelect, onOpenLightbox, alt }) 
         <img
           src={safeImages[activeIndex] || safeImages[0]}
           alt={alt}
+          fetchPriority={activeIndex === 0 ? 'high' : undefined}
           className="h-full w-full object-cover transition-transform duration-300 ease-out"
           style={{
             transform: zooming ? 'scale(1.6)' : 'scale(1)',

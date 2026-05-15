@@ -30,31 +30,35 @@ public class AdminServiceImpl implements AdminService {
     private final OrderService orderService;
     private final AuthService authService;
     private final CacheManager cacheManager;
+    private final CachedSystemSettingsProvider systemSettingsProvider;
 
     public AdminServiceImpl(
             CatalogRepository catalogRepository,
             CatalogService catalogService,
             OrderService orderService,
             AuthService authService,
-            CacheManager cacheManager
+            CacheManager cacheManager,
+            CachedSystemSettingsProvider systemSettingsProvider
     ) {
         this.catalogRepository = catalogRepository;
         this.catalogService = catalogService;
         this.orderService = orderService;
         this.authService = authService;
         this.cacheManager = cacheManager;
+        this.systemSettingsProvider = systemSettingsProvider;
     }
 
     @Override
     public List<CatalogDtos.ProductResponse> listProducts() {
         return catalogRepository.findAllProducts().stream()
-                .map(product -> catalogService.getProductById(product.id()))
+                .map(product -> catalogService.getProductByIdForAdmin(product.id()))
                 .toList();
     }
 
     @Override
     public CatalogDtos.ProductResponse createProduct(AdminDtos.UpsertProductRequest request) {
         validateCategory(request.categoryId());
+        boolean visible = request.storefrontVisible() == null || request.storefrontVisible();
         Product created = new Product(
                 catalogRepository.nextProductId(),
                 request.name(),
@@ -72,11 +76,12 @@ public class AdminServiceImpl implements AdminService {
                 blankToNull(request.subcategory()),
                 false,
                 false,
-                null
+                null,
+                visible
         );
         catalogRepository.saveProduct(created);
         evictCatalogCaches();
-        return catalogService.getProductById(created.id());
+        return catalogService.getProductByIdForAdmin(created.id());
     }
 
     @Override
@@ -84,6 +89,7 @@ public class AdminServiceImpl implements AdminService {
         Product current = catalogRepository.findProductById(productId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Product not found"));
         validateCategory(request.categoryId());
+        boolean visible = request.storefrontVisible() == null || request.storefrontVisible();
         Product updated = new Product(
                 current.id(),
                 request.name(),
@@ -101,11 +107,12 @@ public class AdminServiceImpl implements AdminService {
                 blankToNull(request.subcategory()),
                 current.newArrival(),
                 current.bestSeller(),
-                current.compareAtPrice()
+                current.compareAtPrice(),
+                visible
         );
         catalogRepository.saveProduct(updated);
         evictCatalogCaches();
-        return catalogService.getProductById(updated.id());
+        return catalogService.getProductByIdForAdmin(updated.id());
     }
 
     @Override
@@ -173,10 +180,15 @@ public class AdminServiceImpl implements AdminService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         Map<String, Long> byStatus = orders.stream()
                 .collect(Collectors.groupingBy(CommerceDtos.OrderResponse::status, Collectors.counting()));
-        List<CatalogDtos.ProductResponse> lowStock = listProducts().stream()
-                .filter(product -> product.stock() <= 5)
-                .limit(10)
-                .toList();
+        var settings = systemSettingsProvider.requireSettings();
+        int threshold = settings.getStockThreshold() != null ? settings.getStockThreshold() : 5;
+        List<CatalogDtos.ProductResponse> lowStock = List.of();
+        if (settings.isLowStockAlertEnabled()) {
+            lowStock = listProducts().stream()
+                    .filter(product -> product.stock() <= threshold)
+                    .limit(10)
+                    .toList();
+        }
         return new AdminDtos.DashboardMetricsResponse(
                 orders.size(),
                 authService.listUsers().size(),
@@ -225,6 +237,7 @@ public class AdminServiceImpl implements AdminService {
         clearCache("categories");
         clearCache("products");
         clearCache("productById");
+        clearCache("productByIdAdmin");
         clearCache("relatedProducts");
     }
 

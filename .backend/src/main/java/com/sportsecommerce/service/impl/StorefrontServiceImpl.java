@@ -67,7 +67,7 @@ public class StorefrontServiceImpl implements StorefrontService {
                 .map(this::toFeaturedReview)
                 .toList();
 
-        long productCount = catalogRepository.countProducts();
+        long productCount = catalogRepository.countStorefrontProducts();
         long reviewCount = reviewService.countAll();
         OptionalDouble avg = reviewService.averageRatingAll();
         Double averageRating = avg.isEmpty()

@@ -63,7 +63,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartDtos.CartResponse addItem(String email, CartDtos.AddCartItemRequest request) {
-        Product product = findProduct(request.productId());
+        Product product = requireStorefrontProduct(request.productId());
         validateVariant(product, request.size(), request.color());
         CartEntity cart = ensureCart(email);
 
@@ -95,7 +95,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartDtos.CartResponse updateItem(String email, Long productId, CartDtos.UpdateCartItemRequest request) {
-        Product product = findProduct(productId);
+        Product product = requireStorefrontProduct(productId);
         validateVariant(product, request.size(), request.color());
         CartEntity cart = ensureCart(email);
 
@@ -179,9 +179,17 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED, "Authentication required"));
     }
 
-    private Product findProduct(Long productId) {
+    private Product loadProductForCartLine(Long productId) {
         return catalogRepository.findProductById(productId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Product not found"));
+    }
+
+    private Product requireStorefrontProduct(Long productId) {
+        Product p = loadProductForCartLine(productId);
+        if (!p.storefrontVisible()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        return p;
     }
 
     private static Optional<CartItemEntity> findLine(CartEntity cart, Long productId, Integer sizeKey, String colorKey) {
@@ -224,7 +232,7 @@ public class CartServiceImpl implements CartService {
     private CartDtos.CartResponse buildCartResponse(CartEntity cart) {
         List<CartDtos.CartItemResponse> cartItems = cart.getItems().stream()
                 .map(item -> {
-                    Product product = findProduct(item.getProductId());
+                    Product product = loadProductForCartLine(item.getProductId());
                     BigDecimal subtotal = product.price().multiply(BigDecimal.valueOf(item.getQuantity()));
                     Integer sizeForResponse = NO_SIZE.equals(item.getVariantSize()) ? null : item.getVariantSize();
                     String colorForResponse = NO_COLOR.equals(item.getVariantColor()) ? null : item.getVariantColor();

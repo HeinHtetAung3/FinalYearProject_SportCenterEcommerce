@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { IMAGE_PLACEHOLDER, resolveProductImage } from '../../utils/firebaseStorage';
+import { IMAGE_PLACEHOLDER, IMAGE_PLACEHOLDER_INLINE, resolveProductImage } from '../../utils/firebaseStorage';
 import { classNames } from '../../utils/format';
 
 /**
@@ -16,7 +16,8 @@ function ProductImage({
   className = '',
   imageClassName = '',
   zoom = false,
-  rounded = 'rounded-2xl'
+  rounded = 'rounded-2xl',
+  sizes = '(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 320px'
 }) {
   const initialSrc = srcOverride || resolveProductImage(product, { index });
   const [src, setSrc] = useState(initialSrc);
@@ -27,14 +28,11 @@ function ProductImage({
     setLoaded(false);
   }, [initialSrc]);
 
-  // Hard fallback: if the resolved URL (Firebase, category placeholder,
-  // etc.) ever 404s we swap to the inline SVG placeholder. The
-  // placeholder is a data: URI so it can never fail to load and we
-  // also flip `loaded` so the skeleton doesn't sit on top of it.
-  // Guarding on `src !== IMAGE_PLACEHOLDER` avoids any chance of an
-  // infinite onError loop.
+  // Try /images/placeholder-product.svg first, then inline SVG so load always succeeds.
   const handleError = () => {
-    if (src !== IMAGE_PLACEHOLDER) {
+    if (src === IMAGE_PLACEHOLDER) {
+      setSrc(IMAGE_PLACEHOLDER_INLINE);
+    } else if (src !== IMAGE_PLACEHOLDER_INLINE) {
       setSrc(IMAGE_PLACEHOLDER);
     }
     setLoaded(true);
@@ -48,10 +46,11 @@ function ProductImage({
         alt={alt || product?.name || 'Product image'}
         loading="lazy"
         decoding="async"
+        sizes={sizes}
         onLoad={() => setLoaded(true)}
         onError={handleError}
         className={classNames(
-          'h-full w-full object-cover transition duration-700 ease-out',
+          'h-full w-full object-cover object-center transition duration-700 ease-out',
           loaded ? 'opacity-100' : 'opacity-0',
           zoom ? 'group-hover:scale-110' : '',
           imageClassName

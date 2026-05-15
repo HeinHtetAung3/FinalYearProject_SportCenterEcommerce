@@ -8,34 +8,13 @@ export async function fetchAdminMetrics() {
 }
 
 /**
- * Full product list for admin: pages through GET /api/products (same data as the storefront).
+ * Full product list for admin (includes hidden SKUs). Uses GET /api/admin/products.
  */
 export async function fetchAdminProducts() {
-    const pageSize = 250;
-    const all = [];
-    let page = 0;
-    let totalPages = 1;
-
-    while (page < totalPages) {
-        const {
-            data
-        } = await apiClient.get('/api/products', {
-            params: {
-                page,
-                size: pageSize,
-                sort: 'nameAsc'
-            }
-        });
-        const items = Array.isArray(data?.items) ? data.items : [];
-        all.push(...items);
-        const reported = data?.totalPages;
-        totalPages = typeof reported === 'number' && reported >= 0 ? reported : page + 1;
-        page += 1;
-        if (items.length === 0 && page >= totalPages) {
-            break;
-        }
-    }
-    return all;
+    const {
+        data
+    } = await apiClient.get('/api/admin/products');
+    return Array.isArray(data) ? data : [];
 }
 
 export async function updateAdminOrderStatus(orderId, status) {
@@ -151,11 +130,14 @@ export const EMPTY_SYSTEM_SETTINGS = {
         stripeEnabled: false,
         stripePublicKey: '',
         stripeSecretConfigured: false,
+        stripeReady: false,
         stripeSecretKey: ''
     },
     shipping: {
+        shippingEnabled: true,
         flatShippingFee: 0,
         freeShippingThreshold: 0,
+        expressShippingSurcharge: 12.99,
         deliveryRegions: ['United States'],
         estimatedDeliveryTime: '3-5 business days'
     },
@@ -194,18 +176,24 @@ export function normalizeAdminSettings(data) {
         payments: {
             ...EMPTY_SYSTEM_SETTINGS.payments,
             ...(source.payments || {}),
-            stripeSecretKey: ''
+            stripeSecretKey: '',
+            stripeReady: Boolean(source.payments && source.payments.stripeReady)
         },
         shipping: {
             ...EMPTY_SYSTEM_SETTINGS.shipping,
             ...(source.shipping || {}),
-            deliveryRegions: Array.isArray(source.shipping?.deliveryRegions) ?
+            shippingEnabled: source.shipping && typeof source.shipping.shippingEnabled === 'boolean' ?
+                source.shipping.shippingEnabled : EMPTY_SYSTEM_SETTINGS.shipping.shippingEnabled,
+            expressShippingSurcharge: source.shipping && source.shipping.expressShippingSurcharge != null ?
+                Number(source.shipping.expressShippingSurcharge) : EMPTY_SYSTEM_SETTINGS.shipping.expressShippingSurcharge,
+            deliveryRegions: Array.isArray(source.shipping && source.shipping.deliveryRegions) ?
                 source.shipping.deliveryRegions : EMPTY_SYSTEM_SETTINGS.shipping.deliveryRegions
         },
         tax: {
             ...EMPTY_SYSTEM_SETTINGS.tax,
             ...(source.tax || {}),
-            regionTaxRules: Array.isArray(source.tax?.regionTaxRules) ? source.tax.regionTaxRules : []
+            regionTaxRules: Array.isArray(source.tax && source.tax.regionTaxRules) ?
+                source.tax.regionTaxRules : []
         },
         product: {
             ...EMPTY_SYSTEM_SETTINGS.product,
@@ -259,5 +247,33 @@ export async function updateAdminSettings(payload) {
     const {
         data
     } = await apiClient.put('/api/admin/settings', toAdminSettingsUpdatePayload(payload));
+    return normalizeAdminSettings(data);
+}
+
+export async function fetchAdminPaymentSettings() {
+    const {
+        data
+    } = await apiClient.get('/api/admin/settings/payments');
+    return data;
+}
+
+export async function updateAdminPaymentSettings(paymentsPayload) {
+    const body = {
+        creditCardEnabled: Boolean(paymentsPayload.creditCardEnabled),
+        cashOnDeliveryEnabled: Boolean(paymentsPayload.cashOnDeliveryEnabled),
+        stripeEnabled: Boolean(paymentsPayload.stripeEnabled),
+        stripePublicKey: paymentsPayload.stripePublicKey || '',
+        stripeSecretKey: paymentsPayload.stripeSecretKey || ''
+    };
+    const {
+        data
+    } = await apiClient.put('/api/admin/settings/payments', body);
+    return data;
+}
+
+export async function resetAdminSettingsToDefaults() {
+    const {
+        data
+    } = await apiClient.post('/api/admin/settings/reset');
     return normalizeAdminSettings(data);
 }

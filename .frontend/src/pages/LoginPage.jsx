@@ -17,9 +17,9 @@ import {
 } from '../utils/authValidators';
 import { getSafeReturnPath } from '../utils/navigationSecurity';
 import { getStoredAuth } from '../utils/storage';
+import { buildCategoryImageUrl } from '../utils/productImages';
 
-const HERO_IMAGE =
-  'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1200&q=80';
+const HERO_IMAGE = buildCategoryImageUrl('running', 4);
 
 const emptyErrors = () => ({
   email: '',

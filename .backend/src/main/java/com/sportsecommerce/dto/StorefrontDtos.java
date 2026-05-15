@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
@@ -128,6 +129,41 @@ public final class StorefrontDtos {
             @NotBlank @Size(max = 500) String href,
             int sortOrder,
             boolean active
+    ) {
+    }
+
+    /**
+     * Public checkout configuration (no secrets). Cached server-side where possible.
+     */
+    public record CommerceTaxRule(String region, BigDecimal taxRatePercent) {
+    }
+
+    public record CommerceTaxOptions(BigDecimal defaultTaxRatePercent, List<CommerceTaxRule> regionTaxRules) {
+    }
+
+    public record CommercePaymentOptions(
+            boolean creditCardEnabled,
+            boolean cashOnDeliveryEnabled,
+            boolean stripeEnabled,
+            String stripePublishableKey
+    ) {
+    }
+
+    public record CommerceShippingOptions(
+            boolean enabled,
+            BigDecimal flatShippingFee,
+            BigDecimal freeShippingThreshold,
+            BigDecimal expressShippingSurcharge,
+            List<String> deliveryRegions,
+            String estimatedDeliveryTime
+    ) {
+    }
+
+    public record CommerceCheckoutConfigResponse(
+            CommercePaymentOptions payments,
+            CommerceShippingOptions shipping,
+            CommerceTaxOptions tax,
+            boolean reviewsEnabled
     ) {
     }
 }

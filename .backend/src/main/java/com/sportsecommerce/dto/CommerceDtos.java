@@ -29,7 +29,8 @@ public final class CommerceDtos {
     public record CreateOrderRequest(
             @NotBlank String shippingAddress,
             @NotBlank String paymentMethod,
-            @NotEmpty List<@NotNull Long> cartItemIds
+            @NotEmpty List<@NotNull Long> cartItemIds,
+            String shippingSpeedId
     ) {
     }
 
@@ -105,7 +106,7 @@ public final class CommerceDtos {
 
     public record ChangePasswordRequest(
             @NotBlank String currentPassword,
-            @NotBlank @Size(min = 8, max = 128) String newPassword
+            @NotBlank @Size(min = 6, max = 128) String newPassword
     ) {
     }
 

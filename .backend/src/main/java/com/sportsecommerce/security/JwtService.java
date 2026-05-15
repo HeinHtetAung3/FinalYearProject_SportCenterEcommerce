@@ -1,5 +1,6 @@
 package com.sportsecommerce.security;
 
+import com.sportsecommerce.repository.SystemSettingsJpaRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -15,9 +16,11 @@ public class JwtService {
 
     private final JwtProperties properties;
     private final SecretKey key;
+    private final SystemSettingsJpaRepository systemSettingsJpaRepository;
 
-    public JwtService(JwtProperties properties) {
+    public JwtService(JwtProperties properties, SystemSettingsJpaRepository systemSettingsJpaRepository) {
         this.properties = properties;
+        this.systemSettingsJpaRepository = systemSettingsJpaRepository;
         this.key = Keys.hmacShaKeyFor(properties.secret().getBytes(StandardCharsets.UTF_8));
     }
 
@@ -26,7 +29,7 @@ public class JwtService {
     }
 
     public String generateAccessToken(String subject, String role) {
-        return generateToken(subject, properties.accessTokenExpirySeconds(), "access", role);
+        return generateToken(subject, accessTokenExpirySecondsRuntime(), "access", role);
     }
 
     public String generateRefreshToken(String subject) {
@@ -55,7 +58,13 @@ public class JwtService {
     }
 
     public long getAccessTokenExpirySeconds() {
-        return properties.accessTokenExpirySeconds();
+        return accessTokenExpirySecondsRuntime();
+    }
+
+    private long accessTokenExpirySecondsRuntime() {
+        return systemSettingsJpaRepository.findById(1L)
+                .map(e -> Math.clamp(e.getJwtExpirationMinutes() * 60L, 300L, 86_400L))
+                .orElse(properties.accessTokenExpirySeconds());
     }
 
     public long getRefreshTokenExpirySeconds() {

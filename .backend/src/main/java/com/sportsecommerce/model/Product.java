@@ -31,6 +31,7 @@ public record Product(
         String subcategory,
         boolean newArrival,
         boolean bestSeller,
-        BigDecimal compareAtPrice
+        BigDecimal compareAtPrice,
+        boolean storefrontVisible
 ) {
 }

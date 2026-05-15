@@ -10,28 +10,16 @@
  */
 
 import {
-    buildCategoryImageUrl
+    buildCategoryImageUrl,
+    CATEGORY_IMAGE_ALIASES,
+    inferCategoryHeroSlug
 } from './productImages';
 
 const FIREBASE_BUCKET =
     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '';
 
-// Maps any "category-ish" string the data might use (slug, name, legacy
-// taxonomy) to a canonical slug understood by productImages.js. New
-// aliases can be added here without touching the resolver.
-const CATEGORY_ALIASES = {
-    running: 'running',
-    footwear: 'running',
-    shoes: 'running',
-    football: 'football',
-    balls: 'football',
-    fitness: 'fitness',
-    gym: 'fitness',
-    outdoor: 'outdoor',
-    basketball: 'basketball',
-    training: 'fitness',
-    accessories: 'accessories'
-};
+/** Static SVG in /public when remote or category fallbacks fail */
+const PLACEHOLDER_PATH = '/images/placeholder-product.svg';
 
 const PLACEHOLDER_DATA_URL =
     'data:image/svg+xml;utf8,' +
@@ -64,16 +52,20 @@ export function buildFirebaseImageUrl(path) {
     return `https://firebasestorage.googleapis.com/v0/b/${FIREBASE_BUCKET}/o/${encoded}?alt=media`;
 }
 
-function fallbackForCategory(category) {
+function fallbackForCategory(category, product) {
+    const inferred = product && inferCategoryHeroSlug(product);
+    if (inferred) {
+        return buildCategoryImageUrl(inferred, 1);
+    }
     const key = String(category || '').toLowerCase().trim();
-    const slug = CATEGORY_ALIASES[key] || 'fitness';
+    const slug = CATEGORY_IMAGE_ALIASES[key] || key || 'fitness';
     return buildCategoryImageUrl(slug, 1);
 }
 
 export function resolveProductImage(product, {
     index = 0
 } = {}) {
-    if (!product) return fallbackForCategory(null);
+    if (!product) return PLACEHOLDER_PATH;
 
     const candidates = []
         .concat(product.images || [])
@@ -85,7 +77,11 @@ export function resolveProductImage(product, {
     if (isAbsoluteUrl(candidate) || isLocalPath(candidate)) return candidate;
     const firebaseUrl = buildFirebaseImageUrl(candidate);
     if (firebaseUrl) return firebaseUrl;
-    return fallbackForCategory(product.categoryName || product.category || product.categorySlug);
+    const fb = fallbackForCategory(
+        product.categoryName || product.category || product.categorySlug,
+        product
+    );
+    return fb || PLACEHOLDER_PATH;
 }
 
 export function getProductGallery(product, count = 4) {
@@ -107,7 +103,10 @@ export function getProductGallery(product, count = 4) {
         }
     });
     if (resolved.length === 0) {
-        resolved.push(fallbackForCategory(product.categoryName || product.category));
+        resolved.push(
+            fallbackForCategory(product.categoryName || product.category || product.categorySlug, product) ||
+            PLACEHOLDER_PATH
+        );
     }
     while (resolved.length < count) {
         resolved.push(resolved[resolved.length - 1]);
@@ -115,4 +114,7 @@ export function getProductGallery(product, count = 4) {
     return resolved;
 }
 
-export const IMAGE_PLACEHOLDER = PLACEHOLDER_DATA_URL;
+export const IMAGE_PLACEHOLDER = PLACEHOLDER_PATH;
+
+/** Inline SVG used only when the static placeholder file fails to load */
+export const IMAGE_PLACEHOLDER_INLINE = PLACEHOLDER_DATA_URL;

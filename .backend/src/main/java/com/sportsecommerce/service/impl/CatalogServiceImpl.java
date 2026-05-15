@@ -53,6 +53,17 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     @Cacheable(value = "productById", key = "#productId")
     public CatalogDtos.ProductResponse getProductById(Long productId) {
+        Product product = catalogRepository.findProductById(productId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Product not found"));
+        if (!product.storefrontVisible()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        return toDto(product);
+    }
+
+    @Override
+    @Cacheable(value = "productByIdAdmin", key = "#productId")
+    public CatalogDtos.ProductResponse getProductByIdForAdmin(Long productId) {
         return catalogRepository.findProductById(productId)
                 .map(this::toDto)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Product not found"));
@@ -90,7 +101,8 @@ public class CatalogServiceImpl implements CatalogService {
                 product.subcategory(),
                 product.newArrival(),
                 product.bestSeller(),
-                product.compareAtPrice()
+                product.compareAtPrice(),
+                product.storefrontVisible()
         );
     }
 

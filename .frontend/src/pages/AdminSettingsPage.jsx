@@ -14,6 +14,7 @@ import {
   EMPTY_SYSTEM_SETTINGS,
   fetchAdminSettings,
   normalizeAdminSettings,
+  resetAdminSettingsToDefaults,
   serializeAdminSettingsForCompare,
   updateAdminSettings
 } from '../services/adminService';
@@ -75,10 +76,13 @@ export default function AdminSettingsPage() {
   const [activeTab, setActiveTab] = useState('general');
   const [stripeSecretDialogOpen, setStripeSecretDialogOpen] = useState(false);
   const [stripeSecretInput, setStripeSecretInput] = useState('');
-
+  const [resetDialogOpen, setResetDialogOpen] = useState(false);
+  const [dangerSaveOpen, setDangerSaveOpen] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const dirty = useMemo(
-    () => serializeAdminSettingsForCompare(settings) !== baseline,
-    [settings, baseline]
+    () =>
+      serializeAdminSettingsForCompare(settings) !== baseline || stripeSecretInput.trim().length > 0,
+    [settings, baseline, stripeSecretInput]
   );
 
   useEffect(() => {
@@ -146,7 +150,15 @@ export default function AdminSettingsPage() {
     .map((r) => `${r.region}: ${r.taxRatePercent}`)
     .join('\n');
 
-  async function handleSave() {
+  function validateClientSettings(s) {
+    if (!s.general.storeName?.trim()) return 'Store name is required.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(s.general.contactEmail || '').trim())) {
+      return 'Valid contact email is required.';
+    }
+    return null;
+  }
+
+  async function performSave() {
     setSaving(true);
     try {
       const payload = {
@@ -161,10 +173,48 @@ export default function AdminSettingsPage() {
       setBaseline(serializeAdminSettingsForCompare(updated));
       setStripeSecretInput('');
       showToast('System settings updated.', { variant: 'success' });
+      window.dispatchEvent(new CustomEvent('sportshub:commerce-settings-changed'));
     } catch (err) {
       showToast(err.message || 'Failed to save system settings.', { variant: 'error' });
     } finally {
       setSaving(false);
+      setDangerSaveOpen(false);
+    }
+  }
+
+  async function handleSave() {
+    const err = validateClientSettings(settings);
+    if (err) {
+      showToast(err, { variant: 'error' });
+      return;
+    }
+    const anyPayment =
+      settings.payments.creditCardEnabled ||
+      settings.payments.cashOnDeliveryEnabled ||
+      (settings.payments.stripeEnabled &&
+        (Boolean(stripeSecretInput.trim()) || settings.payments.stripeSecretConfigured));
+    const dangerous = !settings.shipping.shippingEnabled || !anyPayment;
+    if (dangerous) {
+      setDangerSaveOpen(true);
+      return;
+    }
+    await performSave();
+  }
+
+  async function handleResetConfirm() {
+    setResetting(true);
+    try {
+      const updated = await resetAdminSettingsToDefaults();
+      setSettings(updated);
+      setBaseline(serializeAdminSettingsForCompare(updated));
+      setStripeSecretInput('');
+      showToast('Settings restored to defaults.', { variant: 'success' });
+      window.dispatchEvent(new CustomEvent('sportshub:commerce-settings-changed'));
+      setResetDialogOpen(false);
+    } catch (err) {
+      showToast(err.message || 'Failed to reset settings.', { variant: 'error' });
+    } finally {
+      setResetting(false);
     }
   }
 
@@ -189,6 +239,11 @@ export default function AdminSettingsPage() {
             <CardDescription>
               These settings affect all customers and administrative workflows across the storefront.
             </CardDescription>
+            {!loading && !loadError && dirty ? (
+              <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                You have unsaved changes. Save or reset before leaving this page.
+              </p>
+            ) : null}
           </CardHeader>
           <CardContent className="space-y-5">
             {loadError ? (
@@ -301,6 +356,12 @@ export default function AdminSettingsPage() {
                         onCheckedChange={(stripeEnabled) => patch('payments', { stripeEnabled })}
                         disabled={saving}
                       />
+                      <p className="text-xs text-ink-600 dark:text-ink-400">
+                        Stripe status:{' '}
+                        <span className="font-semibold text-ink-900 dark:text-ink-100">
+                          {settings.payments.stripeReady ? 'Ready (keys configured)' : 'Not ready'}
+                        </span>
+                      </p>
                       <Field label="Stripe Public Key">
                         <Input
                           value={settings.payments.stripePublicKey || ''}
@@ -336,7 +397,26 @@ export default function AdminSettingsPage() {
                     <CardHeader>
                       <CardTitle>Shipping Settings</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid gap-4 md:grid-cols-2">
+                    <CardContent className="space-y-4">
+                      <SwitchRow
+                        id="ship-enabled"
+                        title="Enable shipping & checkout"
+                        description="When disabled, customers cannot complete online orders."
+                        checked={settings.shipping.shippingEnabled}
+                        onCheckedChange={(shippingEnabled) => patch('shipping', { shippingEnabled })}
+                        disabled={saving}
+                      />
+                      <Field label="Express shipping surcharge">
+                        <Input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={settings.shipping.expressShippingSurcharge}
+                          onChange={(e) => patch('shipping', { expressShippingSurcharge: Number(e.target.value) })}
+                          disabled={saving}
+                        />
+                      </Field>
+                      <div className="grid gap-4 md:grid-cols-2">
                       <Field label="Flat Shipping Fee">
                         <Input
                           type="number"
@@ -357,6 +437,7 @@ export default function AdminSettingsPage() {
                           disabled={saving}
                         />
                       </Field>
+                      </div>
                       <Field label="Estimated Delivery Time">
                         <Input
                           value={settings.shipping.estimatedDeliveryTime}
@@ -546,8 +627,16 @@ export default function AdminSettingsPage() {
             )}
           </CardContent>
           {!loading && !loadError ? (
-            <div className="flex justify-end border-t border-ink-100 bg-ink-50/40 px-6 py-4">
-              <Button onClick={handleSave} disabled={!dirty || saving}>
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-ink-100 bg-ink-50/40 px-6 py-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setResetDialogOpen(true)}
+                disabled={saving || resetting}
+              >
+                {resetting ? 'Resetting…' : 'Reset to defaults'}
+              </Button>
+              <Button onClick={handleSave} disabled={!dirty || saving || resetting}>
                 {saving ? 'Saving...' : 'Save Settings'}
               </Button>
             </div>
@@ -578,11 +667,49 @@ export default function AdminSettingsPage() {
             <Button
               type="button"
               onClick={() => {
-                patch('payments', { stripeSecretConfigured: stripeSecretInput.trim().length > 0 || settings.payments.stripeSecretConfigured });
                 setStripeSecretDialogOpen(false);
               }}
             >
-              Use This Secret
+              Done
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={resetDialogOpen} onOpenChange={setResetDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Reset all settings?</DialogTitle>
+            <DialogDescription>
+              This restores store-wide defaults, including clearing saved Stripe keys and commerce rules.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setResetDialogOpen(false)} disabled={resetting}>
+              Cancel
+            </Button>
+            <Button type="button" variant="destructive" onClick={() => void handleResetConfirm()} disabled={resetting}>
+              {resetting ? 'Resetting…' : 'Reset'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={dangerSaveOpen} onOpenChange={setDangerSaveOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm risky changes</DialogTitle>
+            <DialogDescription>
+              Shipping checkout is turned off and/or no usable payment method remains. Customers may be unable to
+              complete orders until you fix this configuration.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setDangerSaveOpen(false)} disabled={saving}>
+              Go back
+            </Button>
+            <Button type="button" onClick={() => void performSave()} disabled={saving}>
+              {saving ? 'Saving…' : 'Save anyway'}
             </Button>
           </DialogFooter>
         </DialogContent>

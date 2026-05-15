@@ -6,6 +6,7 @@ import com.sportsecommerce.entity.UserEntity;
 import com.sportsecommerce.exception.ApiException;
 import com.sportsecommerce.repository.UserAddressJpaRepository;
 import com.sportsecommerce.repository.UserJpaRepository;
+import com.sportsecommerce.service.PasswordPolicyService;
 import com.sportsecommerce.service.ProfileImageStorageService;
 import com.sportsecommerce.service.ProfileService;
 import org.springframework.http.HttpStatus;
@@ -27,17 +28,20 @@ public class ProfileServiceImpl implements ProfileService {
     private final UserJpaRepository userJpaRepository;
     private final UserAddressJpaRepository userAddressJpaRepository;
     private final ProfileImageStorageService profileImageStorageService;
+    private final PasswordPolicyService passwordPolicyService;
 
     public ProfileServiceImpl(
             PasswordEncoder passwordEncoder,
             UserJpaRepository userJpaRepository,
             UserAddressJpaRepository userAddressJpaRepository,
-            ProfileImageStorageService profileImageStorageService
+            ProfileImageStorageService profileImageStorageService,
+            PasswordPolicyService passwordPolicyService
     ) {
         this.passwordEncoder = passwordEncoder;
         this.userJpaRepository = userJpaRepository;
         this.userAddressJpaRepository = userAddressJpaRepository;
         this.profileImageStorageService = profileImageStorageService;
+        this.passwordPolicyService = passwordPolicyService;
     }
 
     @Override
@@ -63,6 +67,7 @@ public class ProfileServiceImpl implements ProfileService {
         if (!passwordEncoder.matches(request.currentPassword(), user.getPasswordHash())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Current password is incorrect");
         }
+        passwordPolicyService.assertAcceptablePassword(request.newPassword());
         user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
     }
 

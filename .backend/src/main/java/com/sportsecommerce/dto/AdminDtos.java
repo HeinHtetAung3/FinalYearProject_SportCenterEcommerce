@@ -29,7 +29,8 @@ public final class AdminDtos {
             String subcategory,
             List<Integer> sizes,
             List<String> colors,
-            List<String> images
+            List<String> images,
+            Boolean storefrontVisible
     ) {
     }
 

@@ -4,6 +4,7 @@ import com.sportsecommerce.model.Category;
 import com.sportsecommerce.model.Product;
 import com.sportsecommerce.repository.CatalogProductQuery;
 import com.sportsecommerce.repository.CatalogRepository;
+import com.sportsecommerce.util.ProductImageManifest;
 import com.sportsecommerce.util.ProductImages;
 import org.springframework.stereotype.Repository;
 
@@ -60,6 +61,7 @@ public class InMemoryCatalogRepository implements CatalogRepository {
     @Override
     public List<Product> findProducts(CatalogProductQuery q) {
         return products.values().stream()
+                .filter(Product::storefrontVisible)
                 .filter(p -> matchesTextSearch(p, q))
                 .filter(p -> q.categoryId() == null || q.categoryId().equals(p.categoryId()))
                 .filter(p -> q.minPrice() == null || p.price().compareTo(q.minPrice()) >= 0)
@@ -105,6 +107,11 @@ public class InMemoryCatalogRepository implements CatalogRepository {
     }
 
     @Override
+    public long countStorefrontProducts() {
+        return products.values().stream().filter(Product::storefrontVisible).count();
+    }
+
+    @Override
     public Optional<Product> findProductById(Long productId) {
         return Optional.ofNullable(products.get(productId));
     }
@@ -136,11 +143,12 @@ public class InMemoryCatalogRepository implements CatalogRepository {
             return List.of();
         }
         Product source = products.get(productId);
-        if (source == null) {
+        if (source == null || !source.storefrontVisible()) {
             return List.of();
         }
 
         List<Product> sameCategory = products.values().stream()
+                .filter(Product::storefrontVisible)
                 .filter(p -> !p.id().equals(productId) && p.categoryId().equals(source.categoryId()))
                 .sorted(Comparator.comparing(Product::rating, Comparator.nullsLast(Comparator.naturalOrder())).reversed())
                 .limit(limit)
@@ -156,6 +164,7 @@ public class InMemoryCatalogRepository implements CatalogRepository {
 
         int need = limit - sameCategory.size();
         List<Product> fillers = products.values().stream()
+                .filter(Product::storefrontVisible)
                 .filter(p -> !seen.contains(p.id()) && !p.categoryId().equals(source.categoryId()))
                 .sorted(Comparator.comparing(Product::rating, Comparator.nullsLast(Comparator.naturalOrder())).reversed())
                 .limit(need)
@@ -208,9 +217,15 @@ public class InMemoryCatalogRepository implements CatalogRepository {
     }
 
     private Product buildProduct(long id, long categoryId, String imageSlug, int imageIndex, RichSpec s) {
-        List<String> imgs = s.imageOverride();
-        if (imgs == null || imgs.isEmpty()) {
-            imgs = List.of(ProductImages.build(imageSlug, imageIndex));
+        List<String> manifestImgs = ProductImageManifest.imagesForProduct(id);
+        List<String> imgs;
+        if (manifestImgs != null && !manifestImgs.isEmpty()) {
+            imgs = manifestImgs;
+        } else {
+            imgs = s.imageOverride();
+            if (imgs == null || imgs.isEmpty()) {
+                imgs = List.of(ProductImages.build(imageSlug, imageIndex));
+            }
         }
         String hero = imgs.get(0);
         List<Integer> sizes = s.sizes() == null ? List.of() : s.sizes();
@@ -238,7 +253,8 @@ public class InMemoryCatalogRepository implements CatalogRepository {
                 s.subcategory(),
                 newArrival,
                 bestSeller,
-                compareAt
+                compareAt,
+                true
         );
     }
 

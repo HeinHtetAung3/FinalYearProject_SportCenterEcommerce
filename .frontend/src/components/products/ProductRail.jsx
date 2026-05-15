@@ -133,7 +133,7 @@ function RailCard({ product }) {
       className="group flex w-[14.5rem] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-ink-100 bg-white shadow-soft transition hover:-translate-y-0.5 hover:border-ink-200 hover:shadow-card sm:w-[15.5rem]"
     >
       <div className="relative">
-        <ProductImage product={product} rounded="rounded-none" className="aspect-square" />
+        <ProductImage product={product} rounded="rounded-none" className="aspect-square" zoom />
         {isOutOfStock ? (
           <span className="absolute left-3 top-3 inline-flex items-center rounded-full bg-rose-600 px-2 py-1 text-2xs font-semibold uppercase tracking-wider text-white">
             Sold out

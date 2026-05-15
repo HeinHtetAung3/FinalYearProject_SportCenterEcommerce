@@ -53,6 +53,12 @@ public class SystemSettingsEntity {
     @Column(name = "free_shipping_threshold", nullable = false, precision = 12, scale = 2)
     private BigDecimal freeShippingThreshold;
 
+    @Column(name = "shipping_enabled", nullable = false)
+    private boolean shippingEnabled = true;
+
+    @Column(name = "express_shipping_surcharge", nullable = false, precision = 12, scale = 2)
+    private BigDecimal expressShippingSurcharge;
+
     @Column(name = "delivery_regions_json", columnDefinition = "TEXT")
     private String deliveryRegionsJson;
 
@@ -225,6 +231,22 @@ public class SystemSettingsEntity {
         this.freeShippingThreshold = freeShippingThreshold;
     }
 
+    public boolean isShippingEnabled() {
+        return shippingEnabled;
+    }
+
+    public void setShippingEnabled(boolean shippingEnabled) {
+        this.shippingEnabled = shippingEnabled;
+    }
+
+    public BigDecimal getExpressShippingSurcharge() {
+        return expressShippingSurcharge;
+    }
+
+    public void setExpressShippingSurcharge(BigDecimal expressShippingSurcharge) {
+        this.expressShippingSurcharge = expressShippingSurcharge;
+    }
+
     public String getDeliveryRegionsJson() {
         return deliveryRegionsJson;
     }
@@ -363,6 +385,10 @@ public class SystemSettingsEntity {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Instant getUpdatedAt() {

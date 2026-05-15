@@ -1,0 +1,2187 @@
+{
+  "version": 1,
+  "categoryHeroes": {
+    "running": [
+      "/images/products/running/running-001.png",
+      "/images/products/running/running-002.png",
+      "/images/products/running/running-003.png",
+      "/images/products/running/running-004.png",
+      "/images/products/running/running-005.png",
+      "/images/products/running/running-006.png"
+    ],
+    "football": [
+      "/images/products/football/football-001.avif",
+      "/images/products/football/football-002.avif",
+      "/images/products/football/football-003.avif",
+      "/images/products/football/football-004.avif",
+      "/images/products/football/football-005.avif",
+      "/images/products/football/football-006.avif"
+    ],
+    "fitness": [
+      "/images/products/fitness/fitness-001.jpg",
+      "/images/products/fitness/fitness-002.jpg",
+      "/images/products/fitness/fitness-003.jpg",
+      "/images/products/fitness/fitness-004.jpg",
+      "/images/products/fitness/fitness-005.jpg",
+      "/images/products/fitness/fitness-006.jpg"
+    ],
+    "outdoor": [
+      "/images/products/outdoor/outdoor-001.avif",
+      "/images/products/outdoor/outdoor-002.avif",
+      "/images/products/outdoor/outdoor-003.avif",
+      "/images/products/outdoor/outdoor-004.avif",
+      "/images/products/outdoor/outdoor-005.avif",
+      "/images/products/outdoor/outdoor-006.avif"
+    ],
+    "basketball": [
+      "/images/products/basketball/basketball-001.png",
+      "/images/products/basketball/basketball-002.png",
+      "/images/products/basketball/basketball-003.png",
+      "/images/products/basketball/basketball-004.png",
+      "/images/products/basketball/basketball-005.png",
+      "/images/products/basketball/basketball-006.png"
+    ],
+    "training": [
+      "/images/products/training/training-001.png",
+      "/images/products/training/training-002.jpg",
+      "/images/products/training/training-003.webp",
+      "/images/products/training/training-004.webp",
+      "/images/products/training/training-005.jpg",
+      "/images/products/training/training-006.avif"
+    ],
+    "accessories": [
+      "/images/products/accessories/accessories-001.avif",
+      "/images/products/accessories/accessories-002.avif",
+      "/images/products/accessories/accessories-003.avif",
+      "/images/products/accessories/accessories-004.avif",
+      "/images/products/accessories/accessories-005.avif",
+      "/images/products/accessories/accessories-006.avif"
+    ],
+    "accessories-bags": [
+      "/images/products/accessories/accessories-007.avif",
+      "/images/products/accessories/accessories-008.avif",
+      "/images/products/accessories/accessories-009.avif",
+      "/images/products/accessories/accessories-010.avif",
+      "/images/products/accessories/accessories-011.avif",
+      "/images/products/accessories/accessories-012.avif"
+    ],
+    "accessories-headwear": [
+      "/images/products/accessories/accessories-013.avif",
+      "/images/products/accessories/accessories-014.avif",
+      "/images/products/accessories/accessories-015.avif",
+      "/images/products/accessories/accessories-016.avif",
+      "/images/products/accessories/accessories-017.avif",
+      "/images/products/accessories/accessories-018.avif"
+    ],
+    "accessories-protective": [
+      "/images/products/accessories/accessories-019.avif",
+      "/images/products/accessories/accessories-020.avif",
+      "/images/products/accessories/accessories-021.png",
+      "/images/products/accessories/accessories-022.avif",
+      "/images/products/accessories/accessories-023.avif",
+      "/images/products/accessories/accessories-024.webp"
+    ],
+    "lifestyle": [
+      "/images/products/lifestyle/lifestyle-001.png",
+      "/images/products/lifestyle/lifestyle-002.png",
+      "/images/products/lifestyle/lifestyle-003.png",
+      "/images/products/lifestyle/lifestyle-004.png",
+      "/images/products/lifestyle/lifestyle-005.png",
+      "/images/products/lifestyle/lifestyle-006.png"
+    ],
+    "lifestyle-sneakers": [
+      "/images/products/lifestyle/lifestyle-007.png",
+      "/images/products/lifestyle/lifestyle-008.png",
+      "/images/products/lifestyle/lifestyle-009.png",
+      "/images/products/lifestyle/lifestyle-010.png",
+      "/images/products/lifestyle/lifestyle-011.png",
+      "/images/products/lifestyle/lifestyle-012.png"
+    ],
+    "lifestyle-hoodies": [
+      "/images/products/lifestyle/lifestyle-013.avif",
+      "/images/products/lifestyle/lifestyle-014.avif",
+      "/images/products/lifestyle/lifestyle-015.avif",
+      "/images/products/lifestyle/lifestyle-016.avif",
+      "/images/products/lifestyle/lifestyle-017.avif",
+      "/images/products/lifestyle/lifestyle-018.avif"
+    ],
+    "lifestyle-tees": [
+      "/images/products/lifestyle/lifestyle-019.avif",
+      "/images/products/lifestyle/lifestyle-020.avif",
+      "/images/products/lifestyle/lifestyle-021.png",
+      "/images/products/lifestyle/lifestyle-022.png",
+      "/images/products/lifestyle/lifestyle-023.avif",
+      "/images/products/lifestyle/lifestyle-024.avif"
+    ],
+    "lifestyle-joggers": [
+      "/images/products/lifestyle/lifestyle-025.avif",
+      "/images/products/lifestyle/lifestyle-026.avif",
+      "/images/products/lifestyle/lifestyle-027.avif",
+      "/images/products/lifestyle/lifestyle-028.avif",
+      "/images/products/lifestyle/lifestyle-029.avif",
+      "/images/products/lifestyle/lifestyle-030.avif"
+    ],
+    "lifestyle-caps": [
+      "/images/products/lifestyle/lifestyle-031.avif",
+      "/images/products/lifestyle/lifestyle-032.avif",
+      "/images/products/lifestyle/lifestyle-033.avif",
+      "/images/products/lifestyle/lifestyle-034.avif",
+      "/images/products/lifestyle/lifestyle-035.avif",
+      "/images/products/lifestyle/lifestyle-031.avif"
+    ],
+    "lifestyle-bags": [
+      "/images/products/lifestyle/lifestyle-036.avif",
+      "/images/products/lifestyle/lifestyle-037.avif",
+      "/images/products/lifestyle/lifestyle-038.avif",
+      "/images/products/lifestyle/lifestyle-039.avif",
+      "/images/products/lifestyle/lifestyle-040.avif",
+      "/images/products/lifestyle/lifestyle-041.avif"
+    ],
+    "gym": [
+      "/images/products/fitness/fitness-007.jpg",
+      "/images/products/fitness/fitness-008.jpg",
+      "/images/products/fitness/fitness-009.jpg",
+      "/images/products/fitness/fitness-010.jpg",
+      "/images/products/fitness/fitness-011.jpg",
+      "/images/products/fitness/fitness-012.jpg"
+    ],
+    "shoes": [
+      "/images/products/running/running-007.png",
+      "/images/products/running/running-008.png",
+      "/images/products/running/running-009.png",
+      "/images/products/running/running-010.png",
+      "/images/products/running/running-011.png",
+      "/images/products/running/running-012.png"
+    ],
+    "balls": [
+      "/images/products/basketball/basketball-007.avif",
+      "/images/products/basketball/basketball-008.avif",
+      "/images/products/basketball/basketball-009.avif",
+      "/images/products/basketball/basketball-010.png",
+      "/images/products/basketball/basketball-011.png",
+      "/images/products/basketball/basketball-012.avif"
+    ]
+  },
+  "products": [
+    {
+      "apiId": 101,
+      "mockId": 1,
+      "images": [
+        "/images/products/running/running-013.png",
+        "/images/products/running/running-014.png",
+        "/images/products/running/running-015.png",
+        "/images/products/running/running-016.png"
+      ]
+    },
+    {
+      "apiId": 102,
+      "mockId": 2,
+      "images": [
+        "/images/products/running/running-017.png",
+        "/images/products/running/running-018.png",
+        "/images/products/running/running-019.png",
+        "/images/products/running/running-020.png"
+      ]
+    },
+    {
+      "apiId": 103,
+      "mockId": 3,
+      "images": [
+        "/images/products/running/running-021.png",
+        "/images/products/running/running-022.png",
+        "/images/products/running/running-023.png",
+        "/images/products/running/running-024.png"
+      ]
+    },
+    {
+      "apiId": 104,
+      "mockId": 4,
+      "images": [
+        "/images/products/running/running-025.png",
+        "/images/products/running/running-026.png",
+        "/images/products/running/running-027.png",
+        "/images/products/running/running-028.png"
+      ]
+    },
+    {
+      "apiId": 105,
+      "mockId": 5,
+      "images": [
+        "/images/products/running/running-029.png",
+        "/images/products/running/running-030.png",
+        "/images/products/running/running-031.png",
+        "/images/products/running/running-032.png"
+      ]
+    },
+    {
+      "apiId": 106,
+      "mockId": 6,
+      "images": [
+        "/images/products/running/running-033.png",
+        "/images/products/running/running-034.png",
+        "/images/products/running/running-035.png",
+        "/images/products/running/running-036.png"
+      ]
+    },
+    {
+      "apiId": 107,
+      "mockId": 7,
+      "images": [
+        "/images/products/running/running-037.png",
+        "/images/products/running/running-038.png",
+        "/images/products/running/running-039.png",
+        "/images/products/running/running-040.png"
+      ]
+    },
+    {
+      "apiId": 108,
+      "mockId": 8,
+      "images": [
+        "/images/products/running/running-041.png",
+        "/images/products/running/running-042.png",
+        "/images/products/running/running-043.png",
+        "/images/products/running/running-044.png"
+      ]
+    },
+    {
+      "apiId": 109,
+      "mockId": 9,
+      "images": [
+        "/images/products/running/running-045.png",
+        "/images/products/running/running-046.png",
+        "/images/products/running/running-047.png",
+        "/images/products/running/running-048.png"
+      ]
+    },
+    {
+      "apiId": 110,
+      "mockId": 10,
+      "images": [
+        "/images/products/running/running-049.png",
+        "/images/products/running/running-050.png",
+        "/images/products/running/running-051.png",
+        "/images/products/running/running-052.png"
+      ]
+    },
+    {
+      "apiId": 111,
+      "mockId": 11,
+      "images": [
+        "/images/products/running/running-053.png",
+        "/images/products/running/running-054.png",
+        "/images/products/running/running-055.png",
+        "/images/products/running/running-056.png"
+      ]
+    },
+    {
+      "apiId": 112,
+      "mockId": 12,
+      "images": [
+        "/images/products/running/running-057.png",
+        "/images/products/running/running-058.png",
+        "/images/products/running/running-059.png",
+        "/images/products/running/running-060.png"
+      ]
+    },
+    {
+      "apiId": 113,
+      "mockId": 13,
+      "images": [
+        "/images/products/running/running-061.png",
+        "/images/products/running/running-062.png",
+        "/images/products/running/running-063.png",
+        "/images/products/running/running-064.png"
+      ]
+    },
+    {
+      "apiId": 114,
+      "mockId": 14,
+      "images": [
+        "/images/products/running/running-065.png",
+        "/images/products/running/running-066.png",
+        "/images/products/running/running-067.png",
+        "/images/products/running/running-068.png"
+      ]
+    },
+    {
+      "apiId": 115,
+      "mockId": 15,
+      "images": [
+        "/images/products/running/running-069.png",
+        "/images/products/running/running-070.png",
+        "/images/products/running/running-071.png",
+        "/images/products/running/running-072.png"
+      ]
+    },
+    {
+      "apiId": 116,
+      "mockId": 16,
+      "images": [
+        "/images/products/running/running-073.png",
+        "/images/products/running/running-074.png",
+        "/images/products/running/running-075.png",
+        "/images/products/running/running-076.png"
+      ]
+    },
+    {
+      "apiId": 117,
+      "mockId": 17,
+      "images": [
+        "/images/products/running/running-077.png",
+        "/images/products/running/running-078.png",
+        "/images/products/running/running-079.png",
+        "/images/products/running/running-080.png"
+      ]
+    },
+    {
+      "apiId": 118,
+      "mockId": 18,
+      "images": [
+        "/images/products/running/running-081.png",
+        "/images/products/running/running-082.png",
+        "/images/products/running/running-083.png",
+        "/images/products/running/running-084.png"
+      ]
+    },
+    {
+      "apiId": 119,
+      "mockId": 19,
+      "images": [
+        "/images/products/running/running-085.png",
+        "/images/products/running/running-086.png",
+        "/images/products/running/running-087.png",
+        "/images/products/running/running-088.png"
+      ]
+    },
+    {
+      "apiId": 120,
+      "mockId": 20,
+      "images": [
+        "/images/products/running/running-089.png",
+        "/images/products/running/running-090.png",
+        "/images/products/running/running-091.png",
+        "/images/products/running/running-092.png"
+      ]
+    },
+    {
+      "apiId": 201,
+      "mockId": 21,
+      "images": [
+        "/images/products/football/football-007.png",
+        "/images/products/football/football-008.png",
+        "/images/products/football/football-009.avif",
+        "/images/products/football/football-010.avif"
+      ]
+    },
+    {
+      "apiId": 202,
+      "mockId": 22,
+      "images": [
+        "/images/products/football/football-011.png",
+        "/images/products/football/football-012.avif",
+        "/images/products/football/football-013.avif",
+        "/images/products/football/football-014.avif"
+      ]
+    },
+    {
+      "apiId": 203,
+      "mockId": 23,
+      "images": [
+        "/images/products/football/football-015.png",
+        "/images/products/football/football-016.avif",
+        "/images/products/football/football-017.avif",
+        "/images/products/football/football-018.avif"
+      ]
+    },
+    {
+      "apiId": 204,
+      "mockId": 24,
+      "images": [
+        "/images/products/football/football-019.png",
+        "/images/products/football/football-020.png",
+        "/images/products/football/football-021.avif",
+        "/images/products/football/football-022.avif"
+      ]
+    },
+    {
+      "apiId": 205,
+      "mockId": 25,
+      "images": [
+        "/images/products/football/football-023.png",
+        "/images/products/football/football-024.avif",
+        "/images/products/football/football-025.png",
+        "/images/products/football/football-026.avif"
+      ]
+    },
+    {
+      "apiId": 206,
+      "mockId": 26,
+      "images": [
+        "/images/products/football/football-027.png",
+        "/images/products/football/football-028.avif",
+        "/images/products/football/football-029.avif",
+        "/images/products/football/football-030.avif"
+      ]
+    },
+    {
+      "apiId": 207,
+      "mockId": 27,
+      "images": [
+        "/images/products/football/football-031.avif",
+        "/images/products/football/football-032.avif",
+        "/images/products/football/football-033.avif",
+        "/images/products/football/football-034.png"
+      ]
+    },
+    {
+      "apiId": 208,
+      "mockId": 28,
+      "images": [
+        "/images/products/football/football-035.avif",
+        "/images/products/football/football-036.avif",
+        "/images/products/football/football-037.avif",
+        "/images/products/football/football-038.png"
+      ]
+    },
+    {
+      "apiId": 209,
+      "mockId": 29,
+      "images": [
+        "/images/products/football/football-039.png",
+        "/images/products/football/football-040.avif",
+        "/images/products/football/football-041.avif",
+        "/images/products/football/football-042.png"
+      ]
+    },
+    {
+      "apiId": 210,
+      "mockId": 30,
+      "images": [
+        "/images/products/football/football-043.avif",
+        "/images/products/football/football-044.png",
+        "/images/products/football/football-045.avif",
+        "/images/products/football/football-046.png"
+      ]
+    },
+    {
+      "apiId": 211,
+      "mockId": 31,
+      "images": [
+        "/images/products/football/football-047.avif",
+        "/images/products/football/football-048.avif",
+        "/images/products/football/football-049.avif",
+        "/images/products/football/football-050.png"
+      ]
+    },
+    {
+      "apiId": 212,
+      "mockId": 32,
+      "images": [
+        "/images/products/football/football-051.avif",
+        "/images/products/football/football-052.avif",
+        "/images/products/football/football-053.png",
+        "/images/products/football/football-054.png"
+      ]
+    },
+    {
+      "apiId": 213,
+      "mockId": 33,
+      "images": [
+        "/images/products/football/football-055.avif",
+        "/images/products/football/football-056.avif",
+        "/images/products/football/football-057.png",
+        "/images/products/football/football-058.png"
+      ]
+    },
+    {
+      "apiId": 214,
+      "mockId": 34,
+      "images": [
+        "/images/products/football/football-059.avif",
+        "/images/products/football/football-060.avif",
+        "/images/products/football/football-061.png",
+        "/images/products/football/football-062.png"
+      ]
+    },
+    {
+      "apiId": 215,
+      "mockId": 35,
+      "images": [
+        "/images/products/football/football-063.png",
+        "/images/products/football/football-064.avif",
+        "/images/products/football/football-065.png",
+        "/images/products/football/football-066.png"
+      ]
+    },
+    {
+      "apiId": 216,
+      "mockId": 36,
+      "images": [
+        "/images/products/football/football-067.avif",
+        "/images/products/football/football-068.avif",
+        "/images/products/football/football-069.png",
+        "/images/products/football/football-070.png"
+      ]
+    },
+    {
+      "apiId": 217,
+      "mockId": 37,
+      "images": [
+        "/images/products/football/football-071.avif",
+        "/images/products/football/football-072.png",
+        "/images/products/football/football-073.png",
+        "/images/products/football/football-074.png"
+      ]
+    },
+    {
+      "apiId": 218,
+      "mockId": 38,
+      "images": [
+        "/images/products/football/football-075.avif",
+        "/images/products/football/football-076.png",
+        "/images/products/football/football-077.png",
+        "/images/products/football/football-078.png"
+      ]
+    },
+    {
+      "apiId": 219,
+      "mockId": 39,
+      "images": [
+        "/images/products/football/football-079.avif",
+        "/images/products/football/football-080.png",
+        "/images/products/football/football-081.png",
+        "/images/products/football/football-082.avif"
+      ]
+    },
+    {
+      "apiId": 220,
+      "mockId": 40,
+      "images": [
+        "/images/products/football/football-083.avif",
+        "/images/products/football/football-084.png",
+        "/images/products/football/football-085.png",
+        "/images/products/football/football-086.avif"
+      ]
+    },
+    {
+      "apiId": 301,
+      "mockId": 41,
+      "images": [
+        "/images/products/fitness/fitness-013.webp",
+        "/images/products/fitness/fitness-014.png",
+        "/images/products/fitness/fitness-015.avif",
+        "/images/products/fitness/fitness-016.jpg"
+      ]
+    },
+    {
+      "apiId": 302,
+      "mockId": 42,
+      "images": [
+        "/images/products/fitness/fitness-017.webp",
+        "/images/products/fitness/fitness-018.avif",
+        "/images/products/fitness/fitness-019.png",
+        "/images/products/fitness/fitness-020.jpg"
+      ]
+    },
+    {
+      "apiId": 303,
+      "mockId": 43,
+      "images": [
+        "/images/products/fitness/fitness-021.avif",
+        "/images/products/fitness/fitness-022.avif",
+        "/images/products/fitness/fitness-023.png",
+        "/images/products/fitness/fitness-024.jpg"
+      ]
+    },
+    {
+      "apiId": 304,
+      "mockId": 44,
+      "images": [
+        "/images/products/fitness/fitness-025.avif",
+        "/images/products/fitness/fitness-026.avif",
+        "/images/products/fitness/fitness-027.jpg",
+        "/images/products/fitness/fitness-028.jpg"
+      ]
+    },
+    {
+      "apiId": 305,
+      "mockId": 45,
+      "images": [
+        "/images/products/fitness/fitness-029.avif",
+        "/images/products/fitness/fitness-030.avif",
+        "/images/products/fitness/fitness-031.jpg",
+        "/images/products/fitness/fitness-032.jpg"
+      ]
+    },
+    {
+      "apiId": 306,
+      "mockId": 46,
+      "images": [
+        "/images/products/fitness/fitness-033.png",
+        "/images/products/fitness/fitness-034.avif",
+        "/images/products/fitness/fitness-035.jpg",
+        "/images/products/fitness/fitness-036.jpg"
+      ]
+    },
+    {
+      "apiId": 307,
+      "mockId": 47,
+      "images": [
+        "/images/products/fitness/fitness-037.png",
+        "/images/products/fitness/fitness-038.avif",
+        "/images/products/fitness/fitness-039.jpg",
+        "/images/products/fitness/fitness-040.jpg"
+      ]
+    },
+    {
+      "apiId": 308,
+      "mockId": 48,
+      "images": [
+        "/images/products/fitness/fitness-041.avif",
+        "/images/products/fitness/fitness-042.png",
+        "/images/products/fitness/fitness-043.jpg",
+        "/images/products/fitness/fitness-044.jpg"
+      ]
+    },
+    {
+      "apiId": 309,
+      "mockId": 49,
+      "images": [
+        "/images/products/fitness/fitness-045.avif",
+        "/images/products/fitness/fitness-046.png",
+        "/images/products/fitness/fitness-047.jpg",
+        "/images/products/fitness/fitness-048.jpg"
+      ]
+    },
+    {
+      "apiId": 310,
+      "mockId": 50,
+      "images": [
+        "/images/products/fitness/fitness-049.avif",
+        "/images/products/fitness/fitness-050.jpg",
+        "/images/products/fitness/fitness-051.jpg",
+        "/images/products/fitness/fitness-052.jpg"
+      ]
+    },
+    {
+      "apiId": 311,
+      "mockId": 51,
+      "images": [
+        "/images/products/fitness/fitness-053.avif",
+        "/images/products/fitness/fitness-054.jpg",
+        "/images/products/fitness/fitness-055.jpg",
+        "/images/products/fitness/fitness-056.jpg"
+      ]
+    },
+    {
+      "apiId": 312,
+      "mockId": 52,
+      "images": [
+        "/images/products/fitness/fitness-057.avif",
+        "/images/products/fitness/fitness-058.jpg",
+        "/images/products/fitness/fitness-059.jpg",
+        "/images/products/fitness/fitness-060.jpg"
+      ]
+    },
+    {
+      "apiId": 313,
+      "mockId": 53,
+      "images": [
+        "/images/products/fitness/fitness-061.avif",
+        "/images/products/fitness/fitness-062.jpg",
+        "/images/products/fitness/fitness-063.jpg",
+        "/images/products/fitness/fitness-064.jpg"
+      ]
+    },
+    {
+      "apiId": 314,
+      "mockId": 54,
+      "images": [
+        "/images/products/fitness/fitness-065.png",
+        "/images/products/fitness/fitness-066.jpg",
+        "/images/products/fitness/fitness-067.jpg",
+        "/images/products/fitness/fitness-068.jpg"
+      ]
+    },
+    {
+      "apiId": 315,
+      "mockId": 55,
+      "images": [
+        "/images/products/fitness/fitness-069.png",
+        "/images/products/fitness/fitness-070.jpg",
+        "/images/products/fitness/fitness-071.jpg",
+        "/images/products/fitness/fitness-072.webp"
+      ]
+    },
+    {
+      "apiId": 316,
+      "mockId": 56,
+      "images": [
+        "/images/products/fitness/fitness-073.jpg",
+        "/images/products/fitness/fitness-074.jpg",
+        "/images/products/fitness/fitness-075.jpg",
+        "/images/products/fitness/fitness-076.webp"
+      ]
+    },
+    {
+      "apiId": 317,
+      "mockId": 57,
+      "images": [
+        "/images/products/fitness/fitness-077.jpg",
+        "/images/products/fitness/fitness-078.jpg",
+        "/images/products/fitness/fitness-079.jpg",
+        "/images/products/fitness/fitness-080.avif"
+      ]
+    },
+    {
+      "apiId": 318,
+      "mockId": 58,
+      "images": [
+        "/images/products/fitness/fitness-081.jpg",
+        "/images/products/fitness/fitness-082.jpg",
+        "/images/products/fitness/fitness-083.jpg",
+        "/images/products/fitness/fitness-084.avif"
+      ]
+    },
+    {
+      "apiId": 319,
+      "mockId": 59,
+      "images": [
+        "/images/products/fitness/fitness-085.jpg",
+        "/images/products/fitness/fitness-086.jpg",
+        "/images/products/fitness/fitness-087.jpg",
+        "/images/products/fitness/fitness-088.avif"
+      ]
+    },
+    {
+      "apiId": 320,
+      "mockId": 60,
+      "images": [
+        "/images/products/fitness/fitness-089.jpg",
+        "/images/products/fitness/fitness-090.jpg",
+        "/images/products/fitness/fitness-091.jpg",
+        "/images/products/fitness/fitness-092.png"
+      ]
+    },
+    {
+      "apiId": 401,
+      "mockId": 61,
+      "images": [
+        "/images/products/outdoor/outdoor-007.avif",
+        "/images/products/outdoor/outdoor-008.avif",
+        "/images/products/outdoor/outdoor-009.avif",
+        "/images/products/outdoor/outdoor-010.avif"
+      ]
+    },
+    {
+      "apiId": 402,
+      "mockId": 62,
+      "images": [
+        "/images/products/outdoor/outdoor-011.avif",
+        "/images/products/outdoor/outdoor-012.avif",
+        "/images/products/outdoor/outdoor-013.avif",
+        "/images/products/outdoor/outdoor-014.avif"
+      ]
+    },
+    {
+      "apiId": 403,
+      "mockId": 63,
+      "images": [
+        "/images/products/outdoor/outdoor-015.avif",
+        "/images/products/outdoor/outdoor-016.avif",
+        "/images/products/outdoor/outdoor-017.avif",
+        "/images/products/outdoor/outdoor-018.avif"
+      ]
+    },
+    {
+      "apiId": 404,
+      "mockId": 64,
+      "images": [
+        "/images/products/outdoor/outdoor-019.avif",
+        "/images/products/outdoor/outdoor-020.avif",
+        "/images/products/outdoor/outdoor-021.avif",
+        "/images/products/outdoor/outdoor-022.avif"
+      ]
+    },
+    {
+      "apiId": 405,
+      "mockId": 65,
+      "images": [
+        "/images/products/outdoor/outdoor-023.avif",
+        "/images/products/outdoor/outdoor-024.avif",
+        "/images/products/outdoor/outdoor-025.avif",
+        "/images/products/outdoor/outdoor-026.png"
+      ]
+    },
+    {
+      "apiId": 406,
+      "mockId": 66,
+      "images": [
+        "/images/products/outdoor/outdoor-027.avif",
+        "/images/products/outdoor/outdoor-028.avif",
+        "/images/products/outdoor/outdoor-029.avif",
+        "/images/products/outdoor/outdoor-030.png"
+      ]
+    },
+    {
+      "apiId": 407,
+      "mockId": 67,
+      "images": [
+        "/images/products/outdoor/outdoor-031.avif",
+        "/images/products/outdoor/outdoor-032.avif",
+        "/images/products/outdoor/outdoor-033.avif",
+        "/images/products/outdoor/outdoor-034.png"
+      ]
+    },
+    {
+      "apiId": 408,
+      "mockId": 68,
+      "images": [
+        "/images/products/outdoor/outdoor-035.avif",
+        "/images/products/outdoor/outdoor-036.avif",
+        "/images/products/outdoor/outdoor-037.avif",
+        "/images/products/outdoor/outdoor-038.avif"
+      ]
+    },
+    {
+      "apiId": 409,
+      "mockId": 69,
+      "images": [
+        "/images/products/outdoor/outdoor-039.avif",
+        "/images/products/outdoor/outdoor-040.avif",
+        "/images/products/outdoor/outdoor-041.png",
+        "/images/products/outdoor/outdoor-042.avif"
+      ]
+    },
+    {
+      "apiId": 410,
+      "mockId": 70,
+      "images": [
+        "/images/products/outdoor/outdoor-043.avif",
+        "/images/products/outdoor/outdoor-044.avif",
+        "/images/products/outdoor/outdoor-045.png",
+        "/images/products/outdoor/outdoor-046.avif"
+      ]
+    },
+    {
+      "apiId": 411,
+      "mockId": 71,
+      "images": [
+        "/images/products/outdoor/outdoor-047.avif",
+        "/images/products/outdoor/outdoor-048.avif",
+        "/images/products/outdoor/outdoor-049.png",
+        "/images/products/outdoor/outdoor-050.avif"
+      ]
+    },
+    {
+      "apiId": 412,
+      "mockId": 72,
+      "images": [
+        "/images/products/outdoor/outdoor-051.avif",
+        "/images/products/outdoor/outdoor-052.avif",
+        "/images/products/outdoor/outdoor-053.avif",
+        "/images/products/outdoor/outdoor-054.avif"
+      ]
+    },
+    {
+      "apiId": 413,
+      "mockId": 73,
+      "images": [
+        "/images/products/outdoor/outdoor-055.avif",
+        "/images/products/outdoor/outdoor-056.png",
+        "/images/products/outdoor/outdoor-057.avif",
+        "/images/products/outdoor/outdoor-058.avif"
+      ]
+    },
+    {
+      "apiId": 414,
+      "mockId": 74,
+      "images": [
+        "/images/products/outdoor/outdoor-059.avif",
+        "/images/products/outdoor/outdoor-060.png",
+        "/images/products/outdoor/outdoor-061.avif",
+        "/images/products/outdoor/outdoor-062.avif"
+      ]
+    },
+    {
+      "apiId": 415,
+      "mockId": 75,
+      "images": [
+        "/images/products/outdoor/outdoor-063.avif",
+        "/images/products/outdoor/outdoor-064.png",
+        "/images/products/outdoor/outdoor-065.avif",
+        "/images/products/outdoor/outdoor-066.avif"
+      ]
+    },
+    {
+      "apiId": 416,
+      "mockId": 76,
+      "images": [
+        "/images/products/outdoor/outdoor-067.avif",
+        "/images/products/outdoor/outdoor-068.avif",
+        "/images/products/outdoor/outdoor-069.avif",
+        "/images/products/outdoor/outdoor-070.avif"
+      ]
+    },
+    {
+      "apiId": 417,
+      "mockId": 77,
+      "images": [
+        "/images/products/outdoor/outdoor-071.png",
+        "/images/products/outdoor/outdoor-072.avif",
+        "/images/products/outdoor/outdoor-073.avif",
+        "/images/products/outdoor/outdoor-074.avif"
+      ]
+    },
+    {
+      "apiId": 418,
+      "mockId": 78,
+      "images": [
+        "/images/products/outdoor/outdoor-075.png",
+        "/images/products/outdoor/outdoor-076.avif",
+        "/images/products/outdoor/outdoor-077.avif",
+        "/images/products/outdoor/outdoor-078.avif"
+      ]
+    },
+    {
+      "apiId": 419,
+      "mockId": 79,
+      "images": [
+        "/images/products/outdoor/outdoor-079.png",
+        "/images/products/outdoor/outdoor-080.avif",
+        "/images/products/outdoor/outdoor-081.avif",
+        "/images/products/outdoor/outdoor-082.avif"
+      ]
+    },
+    {
+      "apiId": 420,
+      "mockId": 80,
+      "images": [
+        "/images/products/outdoor/outdoor-083.avif",
+        "/images/products/outdoor/outdoor-084.avif",
+        "/images/products/outdoor/outdoor-085.avif",
+        "/images/products/outdoor/outdoor-086.avif"
+      ]
+    },
+    {
+      "apiId": 501,
+      "mockId": 81,
+      "images": [
+        "/images/products/basketball/basketball-013.png",
+        "/images/products/basketball/basketball-014.avif",
+        "/images/products/basketball/basketball-015.png",
+        "/images/products/basketball/basketball-016.png"
+      ]
+    },
+    {
+      "apiId": 502,
+      "mockId": 82,
+      "images": [
+        "/images/products/basketball/basketball-017.png",
+        "/images/products/basketball/basketball-018.avif",
+        "/images/products/basketball/basketball-019.png",
+        "/images/products/basketball/basketball-020.png"
+      ]
+    },
+    {
+      "apiId": 503,
+      "mockId": 83,
+      "images": [
+        "/images/products/basketball/basketball-021.png",
+        "/images/products/basketball/basketball-022.avif",
+        "/images/products/basketball/basketball-023.png",
+        "/images/products/basketball/basketball-024.png"
+      ]
+    },
+    {
+      "apiId": 504,
+      "mockId": 84,
+      "images": [
+        "/images/products/basketball/basketball-025.png",
+        "/images/products/basketball/basketball-026.avif",
+        "/images/products/basketball/basketball-027.png",
+        "/images/products/basketball/basketball-028.png"
+      ]
+    },
+    {
+      "apiId": 505,
+      "mockId": 85,
+      "images": [
+        "/images/products/basketball/basketball-029.avif",
+        "/images/products/basketball/basketball-030.png",
+        "/images/products/basketball/basketball-031.png",
+        "/images/products/basketball/basketball-032.png"
+      ]
+    },
+    {
+      "apiId": 506,
+      "mockId": 86,
+      "images": [
+        "/images/products/basketball/basketball-033.avif",
+        "/images/products/basketball/basketball-034.png",
+        "/images/products/basketball/basketball-035.png",
+        "/images/products/basketball/basketball-036.png"
+      ]
+    },
+    {
+      "apiId": 507,
+      "mockId": 87,
+      "images": [
+        "/images/products/basketball/basketball-037.avif",
+        "/images/products/basketball/basketball-038.png",
+        "/images/products/basketball/basketball-039.png",
+        "/images/products/basketball/basketball-040.avif"
+      ]
+    },
+    {
+      "apiId": 508,
+      "mockId": 88,
+      "images": [
+        "/images/products/basketball/basketball-041.avif",
+        "/images/products/basketball/basketball-042.png",
+        "/images/products/basketball/basketball-043.png",
+        "/images/products/basketball/basketball-044.avif"
+      ]
+    },
+    {
+      "apiId": 509,
+      "mockId": 89,
+      "images": [
+        "/images/products/basketball/basketball-045.avif",
+        "/images/products/basketball/basketball-046.png",
+        "/images/products/basketball/basketball-047.png",
+        "/images/products/basketball/basketball-048.avif"
+      ]
+    },
+    {
+      "apiId": 510,
+      "mockId": 90,
+      "images": [
+        "/images/products/basketball/basketball-049.png",
+        "/images/products/basketball/basketball-050.png",
+        "/images/products/basketball/basketball-051.png",
+        "/images/products/basketball/basketball-052.avif"
+      ]
+    },
+    {
+      "apiId": 511,
+      "mockId": 91,
+      "images": [
+        "/images/products/basketball/basketball-053.png",
+        "/images/products/basketball/basketball-054.png",
+        "/images/products/basketball/basketball-055.png",
+        "/images/products/basketball/basketball-056.png"
+      ]
+    },
+    {
+      "apiId": 512,
+      "mockId": 92,
+      "images": [
+        "/images/products/basketball/basketball-057.png",
+        "/images/products/basketball/basketball-058.png",
+        "/images/products/basketball/basketball-059.avif",
+        "/images/products/basketball/basketball-060.png"
+      ]
+    },
+    {
+      "apiId": 513,
+      "mockId": 93,
+      "images": [
+        "/images/products/basketball/basketball-061.png",
+        "/images/products/basketball/basketball-062.png",
+        "/images/products/basketball/basketball-063.avif",
+        "/images/products/basketball/basketball-064.png"
+      ]
+    },
+    {
+      "apiId": 514,
+      "mockId": 94,
+      "images": [
+        "/images/products/basketball/basketball-065.png",
+        "/images/products/basketball/basketball-066.png",
+        "/images/products/basketball/basketball-067.avif",
+        "/images/products/basketball/basketball-068.png"
+      ]
+    },
+    {
+      "apiId": 515,
+      "mockId": 95,
+      "images": [
+        "/images/products/basketball/basketball-069.png",
+        "/images/products/basketball/basketball-070.png",
+        "/images/products/basketball/basketball-071.avif",
+        "/images/products/basketball/basketball-072.png"
+      ]
+    },
+    {
+      "apiId": 516,
+      "mockId": 96,
+      "images": [
+        "/images/products/basketball/basketball-073.png",
+        "/images/products/basketball/basketball-074.png",
+        "/images/products/basketball/basketball-075.png",
+        "/images/products/basketball/basketball-076.png"
+      ]
+    },
+    {
+      "apiId": 517,
+      "mockId": 97,
+      "images": [
+        "/images/products/basketball/basketball-077.png",
+        "/images/products/basketball/basketball-078.avif",
+        "/images/products/basketball/basketball-079.png",
+        "/images/products/basketball/basketball-080.avif"
+      ]
+    },
+    {
+      "apiId": 518,
+      "mockId": 98,
+      "images": [
+        "/images/products/basketball/basketball-081.png",
+        "/images/products/basketball/basketball-082.avif",
+        "/images/products/basketball/basketball-083.png",
+        "/images/products/basketball/basketball-084.avif"
+      ]
+    },
+    {
+      "apiId": 519,
+      "mockId": 99,
+      "images": [
+        "/images/products/basketball/basketball-085.png",
+        "/images/products/basketball/basketball-086.avif",
+        "/images/products/basketball/basketball-087.png",
+        "/images/products/basketball/basketball-088.avif"
+      ]
+    },
+    {
+      "apiId": 520,
+      "mockId": 100,
+      "images": [
+        "/images/products/basketball/basketball-089.png",
+        "/images/products/basketball/basketball-090.avif",
+        "/images/products/basketball/basketball-091.png",
+        "/images/products/basketball/basketball-092.avif"
+      ]
+    },
+    {
+      "apiId": 601,
+      "mockId": 101,
+      "images": [
+        "/images/products/training/training-007.jpg",
+        "/images/products/training/training-008.avif",
+        "/images/products/training/training-009.avif",
+        "/images/products/training/training-010.avif"
+      ]
+    },
+    {
+      "apiId": 602,
+      "mockId": 102,
+      "images": [
+        "/images/products/training/training-011.webp",
+        "/images/products/training/training-012.avif",
+        "/images/products/training/training-013.avif",
+        "/images/products/training/training-014.jpg"
+      ]
+    },
+    {
+      "apiId": 603,
+      "mockId": 103,
+      "images": [
+        "/images/products/training/training-015.webp",
+        "/images/products/training/training-016.avif",
+        "/images/products/training/training-017.jpg",
+        "/images/products/training/training-018.png"
+      ]
+    },
+    {
+      "apiId": 604,
+      "mockId": 104,
+      "images": [
+        "/images/products/training/training-019.jpg",
+        "/images/products/training/training-020.png",
+        "/images/products/training/training-021.jpg",
+        "/images/products/training/training-022.png"
+      ]
+    },
+    {
+      "apiId": 605,
+      "mockId": 105,
+      "images": [
+        "/images/products/training/training-023.avif",
+        "/images/products/training/training-024.avif",
+        "/images/products/training/training-025.avif",
+        "/images/products/training/training-026.png"
+      ]
+    },
+    {
+      "apiId": 606,
+      "mockId": 106,
+      "images": [
+        "/images/products/training/training-027.avif",
+        "/images/products/training/training-028.avif",
+        "/images/products/training/training-029.jpg",
+        "/images/products/training/training-030.avif"
+      ]
+    },
+    {
+      "apiId": 607,
+      "mockId": 107,
+      "images": [
+        "/images/products/training/training-031.avif",
+        "/images/products/training/training-032.jpg",
+        "/images/products/training/training-033.png",
+        "/images/products/training/training-034.jpg"
+      ]
+    },
+    {
+      "apiId": 608,
+      "mockId": 108,
+      "images": [
+        "/images/products/training/training-035.png",
+        "/images/products/training/training-036.jpg",
+        "/images/products/training/training-037.png",
+        "/images/products/training/training-038.png"
+      ]
+    },
+    {
+      "apiId": 609,
+      "mockId": 109,
+      "images": [
+        "/images/products/training/training-039.avif",
+        "/images/products/training/training-040.avif",
+        "/images/products/training/training-041.png",
+        "/images/products/training/training-042.jpg"
+      ]
+    },
+    {
+      "apiId": 610,
+      "mockId": 110,
+      "images": [
+        "/images/products/training/training-043.avif",
+        "/images/products/training/training-044.jpg",
+        "/images/products/training/training-045.avif",
+        "/images/products/training/training-046.webp"
+      ]
+    },
+    {
+      "apiId": 611,
+      "mockId": 111,
+      "images": [
+        "/images/products/training/training-047.jpg",
+        "/images/products/training/training-048.png",
+        "/images/products/training/training-049.jpg",
+        "/images/products/training/training-050.webp"
+      ]
+    },
+    {
+      "apiId": 612,
+      "mockId": 112,
+      "images": [
+        "/images/products/training/training-051.jpg",
+        "/images/products/training/training-052.png",
+        "/images/products/training/training-053.png",
+        "/images/products/training/training-054.jpg"
+      ]
+    },
+    {
+      "apiId": 613,
+      "mockId": 113,
+      "images": [
+        "/images/products/training/training-055.avif",
+        "/images/products/training/training-056.png",
+        "/images/products/training/training-057.jpg",
+        "/images/products/training/training-058.avif"
+      ]
+    },
+    {
+      "apiId": 614,
+      "mockId": 114,
+      "images": [
+        "/images/products/training/training-059.jpg",
+        "/images/products/training/training-060.avif",
+        "/images/products/training/training-061.webp",
+        "/images/products/training/training-062.avif"
+      ]
+    },
+    {
+      "apiId": 615,
+      "mockId": 115,
+      "images": [
+        "/images/products/training/training-063.png",
+        "/images/products/training/training-064.jpg",
+        "/images/products/training/training-065.webp",
+        "/images/products/training/training-066.avif"
+      ]
+    },
+    {
+      "apiId": 616,
+      "mockId": 116,
+      "images": [
+        "/images/products/training/training-067.png",
+        "/images/products/training/training-068.png",
+        "/images/products/training/training-069.jpg",
+        "/images/products/training/training-070.png"
+      ]
+    },
+    {
+      "apiId": 617,
+      "mockId": 117,
+      "images": [
+        "/images/products/training/training-071.png",
+        "/images/products/training/training-072.jpg",
+        "/images/products/training/training-073.avif",
+        "/images/products/training/training-074.avif"
+      ]
+    },
+    {
+      "apiId": 618,
+      "mockId": 118,
+      "images": [
+        "/images/products/training/training-075.avif",
+        "/images/products/training/training-076.webp",
+        "/images/products/training/training-077.avif",
+        "/images/products/training/training-078.avif"
+      ]
+    },
+    {
+      "apiId": 619,
+      "mockId": 119,
+      "images": [
+        "/images/products/training/training-079.jpg",
+        "/images/products/training/training-080.webp",
+        "/images/products/training/training-081.avif",
+        "/images/products/training/training-082.jpg"
+      ]
+    },
+    {
+      "apiId": 620,
+      "mockId": 120,
+      "images": [
+        "/images/products/training/training-083.png",
+        "/images/products/training/training-084.jpg",
+        "/images/products/training/training-085.png",
+        "/images/products/training/training-086.jpg"
+      ]
+    },
+    {
+      "apiId": 701,
+      "mockId": 121,
+      "images": [
+        "/images/products/accessories/accessories-025.avif",
+        "/images/products/accessories/accessories-026.avif",
+        "/images/products/accessories/accessories-027.png",
+        "/images/products/accessories/accessories-028.avif"
+      ]
+    },
+    {
+      "apiId": 702,
+      "mockId": 122,
+      "images": [
+        "/images/products/accessories/accessories-029.avif",
+        "/images/products/accessories/accessories-030.avif",
+        "/images/products/accessories/accessories-031.png",
+        "/images/products/accessories/accessories-032.avif"
+      ]
+    },
+    {
+      "apiId": 703,
+      "mockId": 123,
+      "images": [
+        "/images/products/accessories/accessories-033.avif",
+        "/images/products/accessories/accessories-034.avif",
+        "/images/products/accessories/accessories-035.avif",
+        "/images/products/accessories/accessories-036.avif"
+      ]
+    },
+    {
+      "apiId": 704,
+      "mockId": 124,
+      "images": [
+        "/images/products/accessories/accessories-037.avif",
+        "/images/products/accessories/accessories-038.png",
+        "/images/products/accessories/accessories-039.avif",
+        "/images/products/accessories/accessories-040.avif"
+      ]
+    },
+    {
+      "apiId": 705,
+      "mockId": 125,
+      "images": [
+        "/images/products/accessories/accessories-041.avif",
+        "/images/products/accessories/accessories-042.png",
+        "/images/products/accessories/accessories-043.avif",
+        "/images/products/accessories/accessories-044.avif"
+      ]
+    },
+    {
+      "apiId": 706,
+      "mockId": 126,
+      "images": [
+        "/images/products/accessories/accessories-045.avif",
+        "/images/products/accessories/accessories-046.png",
+        "/images/products/accessories/accessories-047.avif",
+        "/images/products/accessories/accessories-048.avif"
+      ]
+    },
+    {
+      "apiId": 707,
+      "mockId": 127,
+      "images": [
+        "/images/products/accessories/accessories-049.avif",
+        "/images/products/accessories/accessories-050.avif",
+        "/images/products/accessories/accessories-051.avif",
+        "/images/products/accessories/accessories-052.avif"
+      ]
+    },
+    {
+      "apiId": 708,
+      "mockId": 128,
+      "images": [
+        "/images/products/accessories/accessories-053.png",
+        "/images/products/accessories/accessories-054.avif",
+        "/images/products/accessories/accessories-055.avif",
+        "/images/products/accessories/accessories-056.avif"
+      ]
+    },
+    {
+      "apiId": 709,
+      "mockId": 129,
+      "images": [
+        "/images/products/accessories/accessories-057.png",
+        "/images/products/accessories/accessories-058.avif",
+        "/images/products/accessories/accessories-059.avif",
+        "/images/products/accessories/accessories-060.avif"
+      ]
+    },
+    {
+      "apiId": 710,
+      "mockId": 130,
+      "images": [
+        "/images/products/accessories/accessories-061.png",
+        "/images/products/accessories/accessories-062.avif",
+        "/images/products/accessories/accessories-063.avif",
+        "/images/products/accessories/accessories-064.avif"
+      ]
+    },
+    {
+      "apiId": 711,
+      "mockId": 131,
+      "images": [
+        "/images/products/accessories/accessories-065.avif",
+        "/images/products/accessories/accessories-066.avif",
+        "/images/products/accessories/accessories-067.avif",
+        "/images/products/accessories/accessories-068.avif"
+      ]
+    },
+    {
+      "apiId": 712,
+      "mockId": 132,
+      "images": [
+        "/images/products/accessories/accessories-069.avif",
+        "/images/products/accessories/accessories-070.avif",
+        "/images/products/accessories/accessories-071.avif",
+        "/images/products/accessories/accessories-072.avif"
+      ]
+    },
+    {
+      "apiId": 713,
+      "mockId": 133,
+      "images": [
+        "/images/products/accessories/accessories-073.avif",
+        "/images/products/accessories/accessories-074.avif",
+        "/images/products/accessories/accessories-075.avif",
+        "/images/products/accessories/accessories-076.avif"
+      ]
+    },
+    {
+      "apiId": 714,
+      "mockId": 134,
+      "images": [
+        "/images/products/accessories/accessories-077.avif",
+        "/images/products/accessories/accessories-078.avif",
+        "/images/products/accessories/accessories-079.avif",
+        "/images/products/accessories/accessories-080.avif"
+      ]
+    },
+    {
+      "apiId": 715,
+      "mockId": 135,
+      "images": [
+        "/images/products/accessories/accessories-081.avif",
+        "/images/products/accessories/accessories-082.avif",
+        "/images/products/accessories/accessories-083.avif",
+        "/images/products/accessories/accessories-084.avif"
+      ]
+    },
+    {
+      "apiId": 716,
+      "mockId": 136,
+      "images": [
+        "/images/products/accessories/accessories-085.avif",
+        "/images/products/accessories/accessories-086.avif",
+        "/images/products/accessories/accessories-087.avif",
+        "/images/products/accessories/accessories-088.avif"
+      ]
+    },
+    {
+      "apiId": 717,
+      "mockId": 137,
+      "images": [
+        "/images/products/accessories/accessories-089.avif",
+        "/images/products/accessories/accessories-090.avif",
+        "/images/products/accessories/accessories-091.avif",
+        "/images/products/accessories/accessories-092.png"
+      ]
+    },
+    {
+      "apiId": 718,
+      "mockId": 138,
+      "images": [
+        "/images/products/accessories/accessories-093.avif",
+        "/images/products/accessories/accessories-094.avif",
+        "/images/products/accessories/accessories-095.avif",
+        "/images/products/accessories/accessories-096.png"
+      ]
+    },
+    {
+      "apiId": 719,
+      "mockId": 139,
+      "images": [
+        "/images/products/accessories/accessories-097.avif",
+        "/images/products/accessories/accessories-098.avif",
+        "/images/products/accessories/accessories-099.avif",
+        "/images/products/accessories/accessories-100.png"
+      ]
+    },
+    {
+      "apiId": 720,
+      "mockId": 140,
+      "images": [
+        "/images/products/accessories/accessories-101.avif",
+        "/images/products/accessories/accessories-102.avif",
+        "/images/products/accessories/accessories-103.avif",
+        "/images/products/accessories/accessories-104.avif"
+      ]
+    },
+    {
+      "apiId": 801,
+      "mockId": 141,
+      "images": [
+        "/images/products/lifestyle/lifestyle-042.png",
+        "/images/products/lifestyle/lifestyle-043.avif",
+        "/images/products/lifestyle/lifestyle-044.avif",
+        "/images/products/lifestyle/lifestyle-045.png"
+      ]
+    },
+    {
+      "apiId": 802,
+      "mockId": 142,
+      "images": [
+        "/images/products/lifestyle/lifestyle-046.png",
+        "/images/products/lifestyle/lifestyle-047.avif",
+        "/images/products/lifestyle/lifestyle-048.avif",
+        "/images/products/lifestyle/lifestyle-049.png"
+      ]
+    },
+    {
+      "apiId": 803,
+      "mockId": 143,
+      "images": [
+        "/images/products/lifestyle/lifestyle-050.png",
+        "/images/products/lifestyle/lifestyle-051.avif",
+        "/images/products/lifestyle/lifestyle-052.avif",
+        "/images/products/lifestyle/lifestyle-053.avif"
+      ]
+    },
+    {
+      "apiId": 804,
+      "mockId": 144,
+      "images": [
+        "/images/products/lifestyle/lifestyle-054.png",
+        "/images/products/lifestyle/lifestyle-055.avif",
+        "/images/products/lifestyle/lifestyle-056.avif",
+        "/images/products/lifestyle/lifestyle-057.avif"
+      ]
+    },
+    {
+      "apiId": 805,
+      "mockId": 145,
+      "images": [
+        "/images/products/lifestyle/lifestyle-058.png",
+        "/images/products/lifestyle/lifestyle-059.avif",
+        "/images/products/lifestyle/lifestyle-060.avif",
+        "/images/products/lifestyle/lifestyle-061.avif"
+      ]
+    },
+    {
+      "apiId": 806,
+      "mockId": 146,
+      "images": [
+        "/images/products/lifestyle/lifestyle-062.png",
+        "/images/products/lifestyle/lifestyle-063.avif",
+        "/images/products/lifestyle/lifestyle-064.avif",
+        "/images/products/lifestyle/lifestyle-065.avif"
+      ]
+    },
+    {
+      "apiId": 807,
+      "mockId": 147,
+      "images": [
+        "/images/products/lifestyle/lifestyle-066.png",
+        "/images/products/lifestyle/lifestyle-067.avif",
+        "/images/products/lifestyle/lifestyle-068.avif",
+        "/images/products/lifestyle/lifestyle-069.avif"
+      ]
+    },
+    {
+      "apiId": 808,
+      "mockId": 148,
+      "images": [
+        "/images/products/lifestyle/lifestyle-070.png",
+        "/images/products/lifestyle/lifestyle-071.avif",
+        "/images/products/lifestyle/lifestyle-072.avif",
+        "/images/products/lifestyle/lifestyle-073.avif"
+      ]
+    },
+    {
+      "apiId": 809,
+      "mockId": 149,
+      "images": [
+        "/images/products/lifestyle/lifestyle-074.png",
+        "/images/products/lifestyle/lifestyle-075.avif",
+        "/images/products/lifestyle/lifestyle-076.avif",
+        "/images/products/lifestyle/lifestyle-077.avif"
+      ]
+    },
+    {
+      "apiId": 810,
+      "mockId": 150,
+      "images": [
+        "/images/products/lifestyle/lifestyle-078.png",
+        "/images/products/lifestyle/lifestyle-079.avif",
+        "/images/products/lifestyle/lifestyle-080.avif",
+        "/images/products/lifestyle/lifestyle-081.avif"
+      ]
+    },
+    {
+      "apiId": 811,
+      "mockId": 151,
+      "images": [
+        "/images/products/lifestyle/lifestyle-082.png",
+        "/images/products/lifestyle/lifestyle-083.avif",
+        "/images/products/lifestyle/lifestyle-084.avif",
+        "/images/products/lifestyle/lifestyle-085.avif"
+      ]
+    },
+    {
+      "apiId": 812,
+      "mockId": 152,
+      "images": [
+        "/images/products/lifestyle/lifestyle-086.png",
+        "/images/products/lifestyle/lifestyle-087.png",
+        "/images/products/lifestyle/lifestyle-088.png",
+        "/images/products/lifestyle/lifestyle-089.avif"
+      ]
+    },
+    {
+      "apiId": 813,
+      "mockId": 153,
+      "images": [
+        "/images/products/lifestyle/lifestyle-090.png",
+        "/images/products/lifestyle/lifestyle-091.png",
+        "/images/products/lifestyle/lifestyle-092.png",
+        "/images/products/lifestyle/lifestyle-093.avif"
+      ]
+    },
+    {
+      "apiId": 814,
+      "mockId": 154,
+      "images": [
+        "/images/products/lifestyle/lifestyle-094.avif",
+        "/images/products/lifestyle/lifestyle-095.avif",
+        "/images/products/lifestyle/lifestyle-096.png",
+        "/images/products/lifestyle/lifestyle-097.avif"
+      ]
+    },
+    {
+      "apiId": 815,
+      "mockId": 155,
+      "images": [
+        "/images/products/lifestyle/lifestyle-098.avif",
+        "/images/products/lifestyle/lifestyle-099.avif",
+        "/images/products/lifestyle/lifestyle-100.png",
+        "/images/products/lifestyle/lifestyle-101.avif"
+      ]
+    },
+    {
+      "apiId": 816,
+      "mockId": 156,
+      "images": [
+        "/images/products/lifestyle/lifestyle-102.avif",
+        "/images/products/lifestyle/lifestyle-103.avif",
+        "/images/products/lifestyle/lifestyle-104.avif",
+        "/images/products/lifestyle/lifestyle-105.avif"
+      ]
+    },
+    {
+      "apiId": 817,
+      "mockId": 157,
+      "images": [
+        "/images/products/lifestyle/lifestyle-106.avif",
+        "/images/products/lifestyle/lifestyle-107.avif",
+        "/images/products/lifestyle/lifestyle-108.avif",
+        "/images/products/lifestyle/lifestyle-109.avif"
+      ]
+    },
+    {
+      "apiId": 818,
+      "mockId": 158,
+      "images": [
+        "/images/products/lifestyle/lifestyle-110.avif",
+        "/images/products/lifestyle/lifestyle-111.avif",
+        "/images/products/lifestyle/lifestyle-112.avif",
+        "/images/products/lifestyle/lifestyle-113.avif"
+      ]
+    },
+    {
+      "apiId": 819,
+      "mockId": 159,
+      "images": [
+        "/images/products/lifestyle/lifestyle-114.avif",
+        "/images/products/lifestyle/lifestyle-115.avif",
+        "/images/products/lifestyle/lifestyle-116.avif",
+        "/images/products/lifestyle/lifestyle-117.avif"
+      ]
+    },
+    {
+      "apiId": 820,
+      "mockId": 160,
+      "images": [
+        "/images/products/lifestyle/lifestyle-118.avif",
+        "/images/products/lifestyle/lifestyle-119.avif",
+        "/images/products/lifestyle/lifestyle-120.avif",
+        "/images/products/lifestyle/lifestyle-121.avif"
+      ]
+    },
+    {
+      "apiId": 821,
+      "mockId": 161,
+      "images": [
+        "/images/products/lifestyle/lifestyle-122.avif",
+        "/images/products/lifestyle/lifestyle-123.avif",
+        "/images/products/lifestyle/lifestyle-124.avif",
+        "/images/products/lifestyle/lifestyle-125.avif"
+      ]
+    },
+    {
+      "apiId": 822,
+      "mockId": 162,
+      "images": [
+        "/images/products/lifestyle/lifestyle-126.avif",
+        "/images/products/lifestyle/lifestyle-127.avif",
+        "/images/products/lifestyle/lifestyle-128.avif",
+        "/images/products/lifestyle/lifestyle-129.avif"
+      ]
+    },
+    {
+      "apiId": 823,
+      "mockId": 163,
+      "images": [
+        "/images/products/lifestyle/lifestyle-130.avif",
+        "/images/products/lifestyle/lifestyle-131.avif",
+        "/images/products/lifestyle/lifestyle-132.avif",
+        "/images/products/lifestyle/lifestyle-133.png"
+      ]
+    },
+    {
+      "apiId": 824,
+      "mockId": 164,
+      "images": [
+        "/images/products/lifestyle/lifestyle-134.avif",
+        "/images/products/lifestyle/lifestyle-135.avif",
+        "/images/products/lifestyle/lifestyle-136.avif",
+        "/images/products/lifestyle/lifestyle-137.png"
+      ]
+    },
+    {
+      "apiId": 825,
+      "mockId": 165,
+      "images": [
+        "/images/products/lifestyle/lifestyle-138.png",
+        "/images/products/lifestyle/lifestyle-139.png",
+        "/images/products/lifestyle/lifestyle-140.avif",
+        "/images/products/lifestyle/lifestyle-141.png"
+      ]
+    },
+    {
+      "apiId": 826,
+      "mockId": 166,
+      "images": [
+        "/images/products/lifestyle/lifestyle-142.png",
+        "/images/products/lifestyle/lifestyle-143.png",
+        "/images/products/lifestyle/lifestyle-144.avif",
+        "/images/products/lifestyle/lifestyle-145.png"
+      ]
+    },
+    {
+      "apiId": 827,
+      "mockId": 167,
+      "images": [
+        "/images/products/lifestyle/lifestyle-146.avif",
+        "/images/products/lifestyle/lifestyle-147.png",
+        "/images/products/lifestyle/lifestyle-148.avif",
+        "/images/products/lifestyle/lifestyle-149.png"
+      ]
+    },
+    {
+      "apiId": 828,
+      "mockId": 168,
+      "images": [
+        "/images/products/lifestyle/lifestyle-150.avif",
+        "/images/products/lifestyle/lifestyle-151.png",
+        "/images/products/lifestyle/lifestyle-152.avif",
+        "/images/products/lifestyle/lifestyle-153.png"
+      ]
+    },
+    {
+      "apiId": 829,
+      "mockId": 169,
+      "images": [
+        "/images/products/lifestyle/lifestyle-154.avif",
+        "/images/products/lifestyle/lifestyle-155.avif",
+        "/images/products/lifestyle/lifestyle-156.avif",
+        "/images/products/lifestyle/lifestyle-157.png"
+      ]
+    },
+    {
+      "apiId": 830,
+      "mockId": 170,
+      "images": [
+        "/images/products/lifestyle/lifestyle-158.avif",
+        "/images/products/lifestyle/lifestyle-159.avif",
+        "/images/products/lifestyle/lifestyle-160.avif",
+        "/images/products/lifestyle/lifestyle-161.png"
+      ]
+    },
+    {
+      "apiId": 831,
+      "mockId": 171,
+      "images": [
+        "/images/products/lifestyle/lifestyle-162.avif",
+        "/images/products/lifestyle/lifestyle-163.avif",
+        "/images/products/lifestyle/lifestyle-164.avif",
+        "/images/products/lifestyle/lifestyle-165.png"
+      ]
+    },
+    {
+      "apiId": 832,
+      "mockId": 172,
+      "images": [
+        "/images/products/lifestyle/lifestyle-166.avif",
+        "/images/products/lifestyle/lifestyle-167.avif",
+        "/images/products/lifestyle/lifestyle-168.avif",
+        "/images/products/lifestyle/lifestyle-169.png"
+      ]
+    },
+    {
+      "apiId": 833,
+      "mockId": 173,
+      "images": [
+        "/images/products/lifestyle/lifestyle-170.avif",
+        "/images/products/lifestyle/lifestyle-171.avif",
+        "/images/products/lifestyle/lifestyle-172.avif",
+        "/images/products/lifestyle/lifestyle-173.png"
+      ]
+    },
+    {
+      "apiId": 834,
+      "mockId": 174,
+      "images": [
+        "/images/products/lifestyle/lifestyle-174.avif",
+        "/images/products/lifestyle/lifestyle-175.avif",
+        "/images/products/lifestyle/lifestyle-176.avif",
+        "/images/products/lifestyle/lifestyle-177.png"
+      ]
+    },
+    {
+      "apiId": 835,
+      "mockId": 175,
+      "images": [
+        "/images/products/lifestyle/lifestyle-178.avif",
+        "/images/products/lifestyle/lifestyle-179.avif",
+        "/images/products/lifestyle/lifestyle-180.avif",
+        "/images/products/lifestyle/lifestyle-181.png"
+      ]
+    },
+    {
+      "apiId": 836,
+      "mockId": 176,
+      "images": [
+        "/images/products/lifestyle/lifestyle-182.avif",
+        "/images/products/lifestyle/lifestyle-183.avif",
+        "/images/products/lifestyle/lifestyle-184.png",
+        "/images/products/lifestyle/lifestyle-185.png"
+      ]
+    },
+    {
+      "apiId": 837,
+      "mockId": 177,
+      "images": [
+        "/images/products/lifestyle/lifestyle-186.avif",
+        "/images/products/lifestyle/lifestyle-187.avif",
+        "/images/products/lifestyle/lifestyle-188.png",
+        "/images/products/lifestyle/lifestyle-189.png"
+      ]
+    },
+    {
+      "apiId": 838,
+      "mockId": 178,
+      "images": [
+        "/images/products/lifestyle/lifestyle-190.png",
+        "/images/products/lifestyle/lifestyle-191.avif",
+        "/images/products/lifestyle/lifestyle-192.png",
+        "/images/products/lifestyle/lifestyle-193.png"
+      ]
+    },
+    {
+      "apiId": 839,
+      "mockId": 179,
+      "images": [
+        "/images/products/lifestyle/lifestyle-194.png",
+        "/images/products/lifestyle/lifestyle-195.avif",
+        "/images/products/lifestyle/lifestyle-196.png",
+        "/images/products/lifestyle/lifestyle-197.png"
+      ]
+    },
+    {
+      "apiId": 840,
+      "mockId": 180,
+      "images": [
+        "/images/products/lifestyle/lifestyle-198.png",
+        "/images/products/lifestyle/lifestyle-199.avif",
+        "/images/products/lifestyle/lifestyle-200.png",
+        "/images/products/lifestyle/lifestyle-201.png"
+      ]
+    },
+    {
+      "apiId": 841,
+      "mockId": 181,
+      "images": [
+        "/images/products/lifestyle/lifestyle-202.png",
+        "/images/products/lifestyle/lifestyle-203.avif",
+        "/images/products/lifestyle/lifestyle-204.png",
+        "/images/products/lifestyle/lifestyle-205.png"
+      ]
+    },
+    {
+      "apiId": 842,
+      "mockId": 182,
+      "images": [
+        "/images/products/lifestyle/lifestyle-206.avif",
+        "/images/products/lifestyle/lifestyle-207.avif",
+        "/images/products/lifestyle/lifestyle-208.png",
+        "/images/products/lifestyle/lifestyle-209.avif"
+      ]
+    },
+    {
+      "apiId": 843,
+      "mockId": 183,
+      "images": [
+        "/images/products/lifestyle/lifestyle-210.avif",
+        "/images/products/lifestyle/lifestyle-211.avif",
+        "/images/products/lifestyle/lifestyle-212.png",
+        "/images/products/lifestyle/lifestyle-213.avif"
+      ]
+    },
+    {
+      "apiId": 844,
+      "mockId": 184,
+      "images": [
+        "/images/products/lifestyle/lifestyle-214.avif",
+        "/images/products/lifestyle/lifestyle-215.avif",
+        "/images/products/lifestyle/lifestyle-216.png",
+        "/images/products/lifestyle/lifestyle-217.avif"
+      ]
+    },
+    {
+      "apiId": 845,
+      "mockId": 185,
+      "images": [
+        "/images/products/lifestyle/lifestyle-218.avif",
+        "/images/products/lifestyle/lifestyle-219.avif",
+        "/images/products/lifestyle/lifestyle-220.png",
+        "/images/products/lifestyle/lifestyle-221.avif"
+      ]
+    },
+    {
+      "apiId": 846,
+      "mockId": 186,
+      "images": [
+        "/images/products/lifestyle/lifestyle-222.avif",
+        "/images/products/lifestyle/lifestyle-223.avif",
+        "/images/products/lifestyle/lifestyle-224.png",
+        "/images/products/lifestyle/lifestyle-225.avif"
+      ]
+    },
+    {
+      "apiId": 847,
+      "mockId": 187,
+      "images": [
+        "/images/products/lifestyle/lifestyle-226.avif",
+        "/images/products/lifestyle/lifestyle-227.avif",
+        "/images/products/lifestyle/lifestyle-228.png",
+        "/images/products/lifestyle/lifestyle-229.avif"
+      ]
+    },
+    {
+      "apiId": 848,
+      "mockId": 188,
+      "images": [
+        "/images/products/lifestyle/lifestyle-230.avif",
+        "/images/products/lifestyle/lifestyle-231.avif",
+        "/images/products/lifestyle/lifestyle-232.png",
+        "/images/products/lifestyle/lifestyle-233.avif"
+      ]
+    },
+    {
+      "apiId": 849,
+      "mockId": 189,
+      "images": [
+        "/images/products/lifestyle/lifestyle-234.avif",
+        "/images/products/lifestyle/lifestyle-235.png",
+        "/images/products/lifestyle/lifestyle-236.png",
+        "/images/products/lifestyle/lifestyle-237.avif"
+      ]
+    },
+    {
+      "apiId": 850,
+      "mockId": 190,
+      "images": [
+        "/images/products/lifestyle/lifestyle-238.avif",
+        "/images/products/lifestyle/lifestyle-239.png",
+        "/images/products/lifestyle/lifestyle-240.png",
+        "/images/products/lifestyle/lifestyle-241.avif"
+      ]
+    },
+    {
+      "mockId": 191,
+      "images": []
+    },
+    {
+      "mockId": 192,
+      "images": []
+    },
+    {
+      "mockId": 193,
+      "images": []
+    },
+    {
+      "mockId": 194,
+      "images": []
+    },
+    {
+      "mockId": 195,
+      "images": []
+    },
+    {
+      "mockId": 196,
+      "images": []
+    },
+    {
+      "mockId": 197,
+      "images": []
+    },
+    {
+      "mockId": 198,
+      "images": []
+    },
+    {
+      "mockId": 199,
+      "images": []
+    },
+    {
+      "mockId": 200,
+      "images": []
+    },
+    {
+      "mockId": 201,
+      "images": []
+    },
+    {
+      "mockId": 202,
+      "images": []
+    },
+    {
+      "mockId": 203,
+      "images": []
+    },
+    {
+      "mockId": 204,
+      "images": []
+    },
+    {
+      "mockId": 205,
+      "images": []
+    },
+    {
+      "mockId": 206,
+      "images": []
+    },
+    {
+      "mockId": 207,
+      "images": []
+    },
+    {
+      "mockId": 208,
+      "images": []
+    },
+    {
+      "mockId": 209,
+      "images": []
+    },
+    {
+      "mockId": 210,
+      "images": []
+    },
+    {
+      "mockId": 211,
+      "images": []
+    },
+    {
+      "mockId": 212,
+      "images": []
+    },
+    {
+      "mockId": 213,
+      "images": []
+    },
+    {
+      "mockId": 214,
+      "images": []
+    },
+    {
+      "mockId": 215,
+      "images": []
+    },
+    {
+      "mockId": 216,
+      "images": []
+    },
+    {
+      "mockId": 217,
+      "images": []
+    },
+    {
+      "mockId": 218,
+      "images": []
+    },
+    {
+      "mockId": 219,
+      "images": []
+    },
+    {
+      "mockId": 220,
+      "images": []
+    }
+  ]
+}

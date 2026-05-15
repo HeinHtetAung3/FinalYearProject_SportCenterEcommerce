@@ -25,27 +25,36 @@ public class ReviewServiceImpl implements ReviewService {
     private final CatalogRepository catalogRepository;
     private final UserJpaRepository userJpaRepository;
     private final UserSettingsJpaRepository userSettingsJpaRepository;
+    private final CachedSystemSettingsProvider systemSettingsProvider;
     private final AtomicLong ids = new AtomicLong(1);
     private final Map<Long, ReviewData> reviews = new ConcurrentHashMap<>();
 
     public ReviewServiceImpl(
             CatalogRepository catalogRepository,
             UserJpaRepository userJpaRepository,
-            UserSettingsJpaRepository userSettingsJpaRepository
+            UserSettingsJpaRepository userSettingsJpaRepository,
+            CachedSystemSettingsProvider systemSettingsProvider
     ) {
         this.catalogRepository = catalogRepository;
         this.userJpaRepository = userJpaRepository;
         this.userSettingsJpaRepository = userSettingsJpaRepository;
+        this.systemSettingsProvider = systemSettingsProvider;
         seedDemoReviewsIfEmpty();
     }
 
     @Override
     public long countAll() {
+        if (!systemSettingsProvider.requireSettings().isReviewsEnabled()) {
+            return 0;
+        }
         return reviews.size();
     }
 
     @Override
     public java.util.OptionalDouble averageRatingAll() {
+        if (!systemSettingsProvider.requireSettings().isReviewsEnabled()) {
+            return java.util.OptionalDouble.empty();
+        }
         int sum = 0;
         int n = 0;
         for (ReviewData r : reviews.values()) {
@@ -61,6 +70,9 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     private void seedDemoReviewsIfEmpty() {
+        if (!systemSettingsProvider.requireSettings().isReviewsEnabled()) {
+            return;
+        }
         if (!reviews.isEmpty()) {
             return;
         }
@@ -93,6 +105,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public java.util.List<CommerceDtos.ReviewResponse> list(Long productId) {
+        if (!systemSettingsProvider.requireSettings().isReviewsEnabled()) {
+            return List.of();
+        }
         return reviews.values().stream()
                 .filter(review -> productId == null || review.productId.equals(productId))
                 .sorted((a, b) -> b.createdAt.compareTo(a.createdAt))
@@ -102,6 +117,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public java.util.List<CommerceDtos.ReviewResponse> listFeatured(int limit) {
+        if (!systemSettingsProvider.requireSettings().isReviewsEnabled()) {
+            return List.of();
+        }
         if (limit <= 0) {
             return List.of();
         }
@@ -116,6 +134,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public CommerceDtos.ReviewResponse create(String email, CommerceDtos.ReviewRequest request) {
+        assertReviewsWritable();
         Product product = findProduct(request.productId());
         boolean duplicate = reviews.values().stream()
                 .anyMatch(review -> review.reviewerEmail.equals(email) && review.productId.equals(request.productId()));
@@ -137,6 +156,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public CommerceDtos.ReviewResponse update(String email, Long reviewId, CommerceDtos.ReviewRequest request) {
+        assertReviewsWritable();
         ReviewData current = findOwned(email, reviewId);
         if (!current.productId.equals(request.productId())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Product id cannot be changed");
@@ -157,13 +177,24 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void delete(String email, Long reviewId) {
+        assertReviewsWritable();
         findOwned(email, reviewId);
         reviews.remove(reviewId);
     }
 
+    private void assertReviewsWritable() {
+        if (!systemSettingsProvider.requireSettings().isReviewsEnabled()) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "Product reviews are disabled for this store");
+        }
+    }
+
     private Product findProduct(Long productId) {
-        return catalogRepository.findProductById(productId)
+        Product p = catalogRepository.findProductById(productId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Product not found"));
+        if (!p.storefrontVisible()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        return p;
     }
 
     private ReviewData findOwned(String email, Long reviewId) {

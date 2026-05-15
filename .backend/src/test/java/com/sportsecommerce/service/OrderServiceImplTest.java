@@ -67,9 +67,10 @@ class OrderServiceImplTest {
         CommerceDtos.OrderResponse order = orderService.create(
                 TEST_EMAIL,
                 new CommerceDtos.CreateOrderRequest(
-                        "12 Pho Hue, Hanoi",
+                        "John Smith, 100 Main St, Boston MA 02110, United States (Tel: 555-0100) · Speed: standard",
                         "COD",
-                        List.of(firstId)
+                        List.of(firstId),
+                        "standard"
                 )
         );
 
@@ -89,7 +90,7 @@ class OrderServiceImplTest {
 
         assertThrows(ApiException.class, () -> orderService.create(
                 TEST_EMAIL,
-                new CommerceDtos.CreateOrderRequest("12 Pho Hue, Hanoi", "COD", List.of())
+                new CommerceDtos.CreateOrderRequest("12 Pho Hue, Hanoi", "COD", List.of(), "standard")
         ));
     }
 
@@ -99,7 +100,12 @@ class OrderServiceImplTest {
 
         assertThrows(ApiException.class, () -> orderService.create(
                 TEST_EMAIL,
-                new CommerceDtos.CreateOrderRequest("12 Pho Hue, Hanoi", "COD", List.of(999_999L))
+                new CommerceDtos.CreateOrderRequest(
+                        "John Smith, 100 Main St, Boston MA 02110, United States (Tel: 555-0100)",
+                        "COD",
+                        List.of(999_999L),
+                        "standard"
+                )
         ));
     }
 

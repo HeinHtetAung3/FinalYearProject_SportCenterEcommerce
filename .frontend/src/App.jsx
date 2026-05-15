@@ -26,6 +26,7 @@ import AdminRoute from './components/auth/AdminRoute';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import { ErrorBoundary } from './components/feedback/ErrorBoundary';
 import { UIProvider } from './context/UIContext';
+import { CommerceConfigProvider } from './context/CommerceConfigContext';
 import MiniCartDrawer from './components/cart/MiniCartDrawer';
 import AddedToBagModal from './components/cart/AddedToBagModal';
 
@@ -36,6 +37,7 @@ function App() {
   return (
     <ErrorBoundary>
       <UIProvider>
+        <CommerceConfigProvider>
         <Routes>
           <Route path="/" element={withCustomerLayout(<HomePage />)} />
           <Route path="/products" element={withCustomerLayout(<ProductsPage />)} />
@@ -115,6 +117,7 @@ function App() {
         </Routes>
         <MiniCartDrawer />
         <AddedToBagModal />
+        </CommerceConfigProvider>
       </UIProvider>
     </ErrorBoundary>
   );

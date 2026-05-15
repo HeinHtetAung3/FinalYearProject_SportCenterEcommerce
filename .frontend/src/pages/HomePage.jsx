@@ -27,7 +27,7 @@ import {
 import { buildCategoryImageUrl } from '../utils/productImages';
 import { formatInteger } from '../utils/format';
 
-const HERO_IMAGE = buildCategoryImageUrl('outdoor', 4);
+const HERO_IMAGE = buildCategoryImageUrl('outdoor', 1);
 
 /** Short blurbs keyed by sport category slug — keeps sport pillar cards evocative. */
 const SPORT_CARD_COPY = {
@@ -51,21 +51,31 @@ const LIFESTYLE_CARD_COPY = {
   Backpack: 'Commute-ready compartments with sport-inspired detailing.'
 };
 
+/** Manifest hero keys — each lifestyle pillar gets its own asset pool (no shared basketball shorts). */
+const LIFESTYLE_HERO_SLUG = {
+  Sneaker: 'lifestyle-sneakers',
+  Hoodie: 'lifestyle-hoodies',
+  Tee: 'lifestyle-tees',
+  Jogger: 'lifestyle-joggers',
+  Cap: 'lifestyle-caps',
+  Backpack: 'lifestyle-bags'
+};
+
 const GENDER_LINKS = [
   {
     label: 'Men',
     to: '/products?gender=men',
-    image: buildCategoryImageUrl('running', 5)
+    image: buildCategoryImageUrl('running', 2)
   },
   {
     label: 'Women',
     to: '/products?gender=women',
-    image: buildCategoryImageUrl('training', 3)
+    image: buildCategoryImageUrl('lifestyle-hoodies', 2)
   },
   {
     label: 'Kids',
     to: '/products?gender=kids',
-    image: buildCategoryImageUrl('basketball', 4)
+    image: buildCategoryImageUrl('basketball', 3)
   }
 ];
 
@@ -132,13 +142,14 @@ function buildHeroStatTiles(stats) {
 function buildLifestyleCards() {
   return LIFESTYLE_ENTRIES.map((entry, index) => {
     const hint = keywordFromLifestyle(entry.to);
+    const heroSlug = LIFESTYLE_HERO_SLUG[hint] || 'lifestyle';
     return {
       title: entry.label,
       eyebrow: 'Shop lifestyle',
       description:
         LIFESTYLE_CARD_COPY[hint] ||
         `${entry.label} — staples inspired by locker rooms and city streets.`,
-      image: buildCategoryImageUrl('lifestyle', (index % 6) + 2),
+      image: buildCategoryImageUrl(heroSlug, (index % 6) + 1),
       to: entry.to
     };
   });
@@ -238,7 +249,10 @@ function HomePage() {
         <img
           src={HERO_IMAGE}
           alt="Athlete training"
-          className="absolute inset-0 -z-10 h-full w-full object-cover opacity-60"
+          fetchPriority="high"
+          decoding="async"
+          sizes="100vw"
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-center opacity-60"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950 via-ink-950/80 to-ink-950/30" />
         <Container className="relative flex min-h-[78vh] flex-col justify-center py-24 sm:py-32">
@@ -348,7 +362,9 @@ function HomePage() {
                     src={g.image}
                     alt=""
                     loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover opacity-75 transition duration-500 ease-out group-hover:scale-105 group-hover:opacity-90"
+                    decoding="async"
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                    className="absolute inset-0 h-full w-full object-cover object-center opacity-75 transition duration-500 ease-out group-hover:scale-105 group-hover:opacity-90"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink-950/95 via-ink-950/40 to-ink-950/25" />
                   <div className="relative flex min-h-[10rem] flex-col justify-end p-6 sm:min-h-[12rem] sm:p-8">

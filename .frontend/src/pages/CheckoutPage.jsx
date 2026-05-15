@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import Container from '../components/ui/Container';
@@ -16,6 +16,7 @@ import {
 } from '../components/ui/Icon';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useCommerceConfig } from '../context/CommerceConfigContext';
 import { usePreferences } from '../context/PreferencesContext';
 import { useUI } from '../context/UIContext';
 import { placeOrder } from '../services/commerceService';
@@ -27,21 +28,31 @@ import {
 } from '../utils/storage';
 import { useGooglePlacesAutocomplete } from '../hooks/useGooglePlacesAutocomplete';
 
-const SHIPPING_THRESHOLD = 75;
-const SHIPPING_FEE = 9.99;
-const EXPRESS_SURCHARGE = 12.99;
+const EXPRESS_FALLBACK = 12.99;
 
-const STEPS = [
-  { id: 'address', label: 'Address', description: 'Contact & delivery' },
-  { id: 'shipping', label: 'Shipping', description: 'Speed & fees' },
-  { id: 'payment', label: 'Payment', description: 'How you pay' }
-];
+function computeShippingFromConfig(commerce, subtotal, shippingSpeedId) {
+  if (!commerce?.shipping?.enabled) return 0;
+  const th = Number(commerce.shipping.freeShippingThreshold ?? 0);
+  const fee = Number(commerce.shipping.flatShippingFee ?? 0);
+  const express = Number(commerce.shipping.expressShippingSurcharge ?? EXPRESS_FALLBACK);
+  const base = subtotal >= th ? 0 : fee;
+  return shippingSpeedId === 'express' ? base + express : base;
+}
 
-const PAYMENT_TABS = [
-  { id: 'CARD', label: 'Card', description: 'Visa, Mastercard, AmEx' },
-  { id: 'COD', label: 'Cash on delivery', description: 'Pay when your parcel arrives' },
-  { id: 'WALLET', label: 'Digital wallet', description: 'Apple Pay – style mock' }
-];
+function computeTaxFromConfig(commerce, subtotal, shipping, addressProbe) {
+  const addr = String(addressProbe || '').toLowerCase();
+  let pct = Number(commerce?.tax?.defaultTaxRatePercent ?? 0);
+  const rules = commerce?.tax?.regionTaxRules;
+  if (Array.isArray(rules)) {
+    for (const rule of rules) {
+      if (rule?.region && addr.includes(String(rule.region).toLowerCase())) {
+        pct = Number(rule.taxRatePercent);
+        break;
+      }
+    }
+  }
+  return +((subtotal + shipping) * (pct / 100)).toFixed(2);
+}
 
 function digitsOnly(value) {
   return String(value ?? '').replace(/\D/g, '');
@@ -66,11 +77,6 @@ function isValidExpiry(mmYy) {
 function isValidCvv(cvv) {
   const d = digitsOnly(cvv);
   return d.length === 3 || d.length === 4;
-}
-
-function computeShipping(subtotal, shippingSpeedId) {
-  const base = subtotal >= SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
-  return shippingSpeedId === 'express' ? base + EXPRESS_SURCHARGE : base;
 }
 
 function OrderSummaryBody({
@@ -149,24 +155,75 @@ function CheckoutPage() {
   } = useCart();
   const { showToast, dismissToast } = useUI();
   const { language, currency, timezone } = usePreferences();
+  const { config: commerce, loading: commerceLoading, error: commerceError, refetch: refetchCommerce } =
+    useCommerceConfig();
 
-  const shippingOptions = useMemo(
+  /** Must be declared before effects that list it in dependency arrays (TDZ-safe). */
+  const [paymentMethod, setPaymentMethod] = useState('CARD');
+
+  const steps = useMemo(
     () => [
+      { id: 'address', label: 'Address', description: 'Contact & delivery' },
+      { id: 'shipping', label: 'Shipping', description: 'Speed & fees' },
+      { id: 'payment', label: 'Payment', description: 'How you pay' }
+    ],
+    []
+  );
+
+  const paymentTabs = useMemo(() => {
+    const p = commerce?.payments;
+    if (!commerce || !p) {
+      return [
+        { id: 'CARD', label: 'Card', description: 'Visa, Mastercard, AmEx' },
+        { id: 'COD', label: 'Cash on delivery', description: 'Pay when your parcel arrives' }
+      ];
+    }
+    const tabs = [];
+    if (p.creditCardEnabled) tabs.push({ id: 'CARD', label: 'Card', description: 'Visa, Mastercard, AmEx' });
+    if (p.cashOnDeliveryEnabled) {
+      tabs.push({ id: 'COD', label: 'Cash on delivery', description: 'Pay when your parcel arrives' });
+    }
+    if (p.stripeEnabled && p.stripePublishableKey) {
+      tabs.push({ id: 'STRIPE', label: 'Stripe', description: 'Secure card checkout via Stripe' });
+    }
+    return tabs.length
+      ? tabs
+      : [{ id: 'CARD', label: 'Card', description: 'Visa, Mastercard, AmEx' }];
+  }, [commerce]);
+
+  useEffect(() => {
+    if (!commerceLoading && commerce?.shipping && !commerce.shipping.enabled) {
+      showToast('Online checkout is temporarily unavailable.', { variant: 'error' });
+      navigate('/cart', { replace: true });
+    }
+  }, [commerceLoading, commerce, navigate, showToast]);
+
+  useEffect(() => {
+    const first = paymentTabs[0]?.id;
+    if (first && !paymentTabs.some((t) => t.id === paymentMethod)) {
+      setPaymentMethod(first);
+    }
+  }, [paymentTabs, paymentMethod]);
+
+  const shippingOptions = useMemo(() => {
+    const th = commerce?.shipping?.freeShippingThreshold ?? 80;
+    const express = commerce?.shipping?.expressShippingSurcharge ?? EXPRESS_FALLBACK;
+    const eta = commerce?.shipping?.estimatedDeliveryTime || '5–7 business days';
+    return [
       {
         id: 'standard',
         title: 'Standard delivery',
-        subtitle: '5–7 business days',
-        note: `Free over ${formatCurrency(SHIPPING_THRESHOLD)}, otherwise a flat fee applies.`
+        subtitle: eta,
+        note: `Free over ${formatCurrency(th)}, otherwise a flat fee applies.`
       },
       {
         id: 'express',
         title: 'Express delivery',
         subtitle: '2–3 business days',
-        note: `Adds ${formatCurrency(EXPRESS_SURCHARGE)} on top of standard shipping.`
+        note: `Adds ${formatCurrency(express)} on top of standard shipping.`
       }
-    ],
-    [language, currency, timezone]
-  );
+    ];
+  }, [commerce, language, currency, timezone]);
 
   // Selective checkout: only the lines the user ticked on /cart go
   // through. If somehow we arrive here with an empty selection but a
@@ -191,7 +248,6 @@ function CheckoutPage() {
   const [savedAddresses, setSavedAddresses] = useState(() => getSavedCheckoutAddresses());
   const [selectedSavedId, setSelectedSavedId] = useState('');
   const [shippingSpeedId, setShippingSpeedId] = useState('standard');
-  const [paymentMethod, setPaymentMethod] = useState('CARD');
   const [card, setCard] = useState({
     nameOnCard: '',
     number: '',
@@ -200,6 +256,7 @@ function CheckoutPage() {
   });
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [placing, setPlacing] = useState(false);
+  const placingRef = useRef(false);
   const [addressFocused, setAddressFocused] = useState(false);
 
   const { suggestions: addressSuggestions, isLoading: isAddressLoading, setSuggestions: setAddressSuggestions } = useGooglePlacesAutocomplete({
@@ -219,11 +276,18 @@ function CheckoutPage() {
   }, [step, setAddressSuggestions]);
 
   const subtotal = selectedTotal;
-  const shipping = useMemo(
-    () => computeShipping(subtotal, shippingSpeedId),
-    [subtotal, shippingSpeedId]
+  const addressProbe = useMemo(
+    () => `${form.address || ''} ${form.city || ''} ${form.postalCode || ''} ${form.country || ''}`,
+    [form.address, form.city, form.postalCode, form.country]
   );
-  const tax = +(subtotal * 0.08).toFixed(2);
+  const shipping = useMemo(
+    () => computeShippingFromConfig(commerce, subtotal, shippingSpeedId),
+    [commerce, subtotal, shippingSpeedId]
+  );
+  const tax = useMemo(
+    () => computeTaxFromConfig(commerce, subtotal, shipping, addressProbe),
+    [commerce, subtotal, shipping, addressProbe]
+  );
   const grand = subtotal + shipping + tax;
   const summaryItems = selectedItems;
 
@@ -323,19 +387,19 @@ function CheckoutPage() {
       showToast(err, { variant: 'error' });
       return;
     }
-    setStep((s) => Math.min(s + 1, STEPS.length - 1));
+    setStep((s) => Math.min(s + 1, steps.length - 1));
   };
 
   const goBack = () => setStep((s) => Math.max(s - 1, 0));
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (placingRef.current) return;
     const err = validateStep(2);
     if (err) {
       showToast(err, { variant: 'error' });
       return;
     }
-    if (placing) return;
 
     if (selectedItemCount === 0) {
       showToast('Select at least one item to checkout.', { variant: 'error' });
@@ -343,6 +407,7 @@ function CheckoutPage() {
       return;
     }
 
+    placingRef.current = true;
     setPlacing(true);
     const loadingToastId = showToast('Placing your order…', { variant: 'loading', duration: 0 });
     try {
@@ -351,7 +416,7 @@ function CheckoutPage() {
       // remove just those lines from the bag, leaving everything else
       // untouched for a future checkout.
       const cartItemIds = Array.from(selectedIds).map(Number);
-      const order = await placeOrder({ shippingAddress, paymentMethod, cartItemIds });
+      const order = await placeOrder({ shippingAddress, paymentMethod, cartItemIds, shippingSpeedId });
       dismissToast(loadingToastId);
       clearSelection();
       navigate(`/orders/success/${order.id}`);
@@ -361,6 +426,7 @@ function CheckoutPage() {
       const msg = apiError?.message || 'Unable to place order.';
       showToast(status ? `${status} · ${msg}` : msg, { variant: 'error' });
     } finally {
+      placingRef.current = false;
       setPlacing(false);
     }
   };
@@ -382,8 +448,33 @@ function CheckoutPage() {
     );
   }
 
+  if (commerceLoading) {
+    return (
+      <Container>
+        <div className="py-20 text-center text-sm text-ink-600">Loading checkout…</div>
+      </Container>
+    );
+  }
+
+  if (commerceError) {
+    return (
+      <Container>
+        <EmptyState
+          icon={<IconCart />}
+          title="Unable to load checkout"
+          description={commerceError}
+          action={
+            <Button type="button" variant="primary" onClick={() => refetchCommerce()}>
+              Retry
+            </Button>
+          }
+        />
+      </Container>
+    );
+  }
+
   const desktopSummaryFooter =
-    step === STEPS.length - 1 ? (
+    step === steps.length - 1 ? (
       <div className="px-6 py-5">
         <Button type="submit" form="checkout-main-form" variant="accent" size="lg" fullWidth disabled={placing}>
           {placing ? 'Placing order…' : `Place order · ${formatCurrency(grand)}`}
@@ -393,7 +484,7 @@ function CheckoutPage() {
     ) : null;
 
   const mobilePrimaryLabel =
-    step < STEPS.length - 1 ? (
+    step < steps.length - 1 ? (
       <>
         Continue
         <IconChevronRight className="ml-1 inline h-4 w-4" aria-hidden />
@@ -417,7 +508,7 @@ function CheckoutPage() {
       {/* Step indicator */}
       <nav aria-label="Checkout steps" className="mb-8 lg:mb-10">
         <ol className="flex flex-col gap-4 sm:flex-row sm:items-stretch sm:gap-3">
-          {STEPS.map((s, index) => {
+          {steps.map((s, index) => {
             const done = index < step;
             const active = index === step;
             const clickable = index < step;
@@ -610,7 +701,7 @@ function CheckoutPage() {
               <p className="mt-1 text-sm text-ink-500">Pick a method. Card details stay on this device for demo only.</p>
 
               <div role="tablist" aria-label="Payment method" className="mt-6 flex flex-wrap gap-2">
-                {PAYMENT_TABS.map((tab) => {
+                {paymentTabs.map((tab) => {
                   const active = paymentMethod === tab.id;
                   return (
                     <button
@@ -631,7 +722,7 @@ function CheckoutPage() {
               </div>
 
               <div className="mt-4 rounded-2xl border border-ink-100 bg-bone/60 p-5">
-                {PAYMENT_TABS.map((tab) =>
+                {paymentTabs.map((tab) =>
                   paymentMethod === tab.id ? (
                     <div key={tab.id} role="tabpanel">
                       <p className="text-sm text-ink-600">{tab.description}</p>
@@ -683,9 +774,10 @@ function CheckoutPage() {
                           possible.
                         </p>
                       ) : null}
-                      {tab.id === 'WALLET' ? (
+                      {tab.id === 'STRIPE' ? (
                         <p className="mt-4 text-sm text-ink-700">
-                          Demo wallet: no extra fields — in production this would launch Apple Pay / Google Pay.
+                          You will be redirected to Stripe to complete payment. No card data is stored on this demo
+                          device.
                         </p>
                       ) : null}
                     </div>
@@ -737,10 +829,11 @@ function CheckoutPage() {
       <MobileCheckoutBar
         grand={grand}
         step={step}
+        lastStepIndex={steps.length - 1}
         summaryOpen={summaryOpen}
         setSummaryOpen={setSummaryOpen}
         onPrimary={
-          step < STEPS.length - 1
+          step < steps.length - 1
             ? goNext
             : () => document.getElementById('checkout-main-form')?.requestSubmit()
         }
@@ -758,6 +851,7 @@ function CheckoutPage() {
 function MobileCheckoutBar({
   grand,
   step,
+  lastStepIndex,
   summaryOpen,
   setSummaryOpen,
   onPrimary,
@@ -822,7 +916,7 @@ function MobileCheckoutBar({
                     grand={grand}
                     compact
                     footer={
-                      step === STEPS.length - 1 ? (
+                      step === lastStepIndex ? (
                         <div className="px-4 py-4">
                           <Button
                             type="button"

@@ -6,6 +6,12 @@ import {
     allowDemoDataFallback
 } from '../utils/demoFallback';
 
+export async function fetchCheckoutCommerceConfig() {
+    const {
+        data
+    } = await apiClient.get('/api/storefront/commerce-config');
+    return data;
+}
 export async function placeOrder(payload) {
     const {
         data

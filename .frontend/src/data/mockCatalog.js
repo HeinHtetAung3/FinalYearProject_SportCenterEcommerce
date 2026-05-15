@@ -16,6 +16,15 @@
 import {
     products as RAW_PRODUCTS
 } from './products';
+import productImageManifest from './product-image-manifest.json';
+
+const manifestByMockId = (() => {
+    const map = new Map();
+    for (const row of productImageManifest.products) {
+        if (row.mockId != null) map.set(Number(row.mockId), row);
+    }
+    return map;
+})();
 
 /**
  * Normalize a colour label to the same slug shape used in URL query params
@@ -254,13 +263,23 @@ export const mockProducts = RAW_PRODUCTS.map((product) => {
     const price = Number(product.price);
     const onSalePattern = id % 7 === 3;
     const compareAt = onSalePattern ? Math.round((price + 28 + (id % 5)) * 100) / 100 : null;
+    const manifestRow = manifestByMockId.get(Number(id));
+    const images =
+        manifestRow?.images?.length > 0 ? manifestRow.images : product.images;
+    const imageUrl =
+        manifestRow?.images?.length > 0 ? manifestRow.images[0] : product.imageUrl;
     return {
         ...product,
+        imageUrl,
+        ...(images?.length ? {
+            images
+        } : {}),
         categoryId: CATEGORY_ID_BY_NAME[product.category] || null,
         categoryName: product.category,
         newArrival: id % 4 === 1,
         bestSeller: id % 5 === 2,
-        compareAtPrice: compareAt
+        compareAtPrice: compareAt,
+        storefrontVisible: product.storefrontVisible !== false
     };
 });
 
@@ -318,6 +337,8 @@ export function paginate(items, params = {}) {
         filtered = filtered.filter((item) => Number(item.categoryId) === numericId);
     }
 
+    filtered = filtered.filter((item) => item.storefrontVisible !== false);
+
     filtered = applyFacetFilters(filtered, params);
 
     if (search) {
@@ -358,7 +379,9 @@ export function paginate(items, params = {}) {
 
 export function findMockProduct(productId) {
     const numeric = Number(productId);
-    return mockProducts.find((product) => product.id === numeric) || null;
+    const found = mockProducts.find((product) => product.id === numeric);
+    if (!found || found.storefrontVisible === false) return null;
+    return found;
 }
 
 /**
@@ -370,10 +393,12 @@ export function findMockProduct(productId) {
 export function findMockRelated(productId, limit = 8) {
     const numericId = Number(productId);
     const source = mockProducts.find((p) => p.id === numericId);
-    if (!source) return [];
+    if (!source || source.storefrontVisible === false) return [];
+
+    const isVisible = (p) => p.storefrontVisible !== false;
 
     const sameCategory = mockProducts
-        .filter((p) => p.id !== numericId && p.categoryId === source.categoryId)
+        .filter((p) => p.id !== numericId && p.categoryId === source.categoryId && isVisible(p))
         .sort((a, b) => Number(b.rating || 0) - Number(a.rating || 0));
 
     if (sameCategory.length >= limit) return sameCategory.slice(0, limit);
@@ -382,6 +407,7 @@ export function findMockRelated(productId, limit = 8) {
         .filter((p) =>
             p.id !== numericId &&
             p.categoryId !== source.categoryId &&
+            isVisible(p) &&
             !sameCategory.some((s) => s.id === p.id)
         )
         .sort((a, b) => Number(b.rating || 0) - Number(a.rating || 0))

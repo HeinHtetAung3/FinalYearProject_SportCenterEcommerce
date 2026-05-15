@@ -50,7 +50,7 @@ public class WishlistServiceImpl implements WishlistService {
     @Transactional
     public CommerceDtos.WishlistResponse add(String email, CommerceDtos.AddWishlistItemRequest request) {
         UserEntity user = findUser(email);
-        findProduct(request.productId());
+        requireStorefrontProduct(request.productId());
         if (wishlistJpaRepository.findByUserAndProductId(user, request.productId()).isEmpty()) {
             WishlistEntity row = new WishlistEntity();
             row.setUser(user);
@@ -72,7 +72,7 @@ public class WishlistServiceImpl implements WishlistService {
     @Transactional
     public CommerceDtos.WishlistResponse moveToCart(String email, Long productId) {
         UserEntity user = findUser(email);
-        Product product = findProduct(productId);
+        Product product = requireStorefrontProduct(productId);
         wishlistJpaRepository.deleteByUserAndProductId(user, productId);
         cartService.addItem(email, new CartDtos.AddCartItemRequest(product.id(), 1, null, null));
         return buildResponse(user);
@@ -82,7 +82,7 @@ public class WishlistServiceImpl implements WishlistService {
     @Transactional
     public CommerceDtos.WishlistToggleResponse toggle(String email, Long productId) {
         UserEntity user = findUser(email);
-        findProduct(productId);
+        requireStorefrontProduct(productId);
         Optional<WishlistEntity> existing = wishlistJpaRepository.findByUserAndProductId(user, productId);
         if (existing.isPresent()) {
             wishlistJpaRepository.delete(existing.get());
@@ -99,7 +99,8 @@ public class WishlistServiceImpl implements WishlistService {
         List<CommerceDtos.WishlistItemResponse> items = wishlistJpaRepository
                 .findByUserOrderByCreatedAtDesc(user)
                 .stream()
-                .map(row -> findProduct(row.getProductId()))
+                .map(row -> catalogRepository.findProductById(row.getProductId()).orElse(null))
+                .filter(p -> p != null && p.storefrontVisible())
                 .map(product -> new CommerceDtos.WishlistItemResponse(
                         product.id(),
                         product.name(),
@@ -107,7 +108,7 @@ public class WishlistServiceImpl implements WishlistService {
                         product.stock(),
                         product.imageUrl()
                 ))
-                .sorted(Comparator.comparing(CommerceDtos.WishlistItemResponse::productName))
+                .sorted(Comparator.comparing(CommerceDtos.WishlistItemResponse::productName, String.CASE_INSENSITIVE_ORDER))
                 .toList();
         return new CommerceDtos.WishlistResponse(items, items.size());
     }
@@ -121,8 +122,12 @@ public class WishlistServiceImpl implements WishlistService {
                 .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED, "Authentication required"));
     }
 
-    private Product findProduct(Long productId) {
-        return catalogRepository.findProductById(productId)
+    private Product requireStorefrontProduct(Long productId) {
+        Product p = catalogRepository.findProductById(productId)
                 .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Product not found"));
+        if (!p.storefrontVisible()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        return p;
     }
 }

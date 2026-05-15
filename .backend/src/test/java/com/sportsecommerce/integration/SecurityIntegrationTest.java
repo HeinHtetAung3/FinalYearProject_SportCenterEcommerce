@@ -37,7 +37,7 @@ class SecurityIntegrationTest {
 
     @Test
     void adminEndpointAllowsAdminToken() throws Exception {
-        String token = registerAndFetchAccessToken("admin.integration@sportshub.local", "password123", "Admin Integration");
+        String token = registerAndFetchAccessToken("admin.integration@sportshub.local", "Password123", "Admin Integration");
 
         mockMvc.perform(get("/api/admin/metrics")
                         .header("Authorization", "Bearer " + token))
@@ -46,7 +46,7 @@ class SecurityIntegrationTest {
 
     @Test
     void adminEndpointRejectsRegularUser() throws Exception {
-        String token = registerAndFetchAccessToken("user.integration@sportshub.local", "password123", "User Integration");
+        String token = registerAndFetchAccessToken("user.integration@sportshub.local", "Password123", "User Integration");
 
         mockMvc.perform(get("/api/admin/metrics")
                         .header("Authorization", "Bearer " + token))
@@ -55,7 +55,7 @@ class SecurityIntegrationTest {
 
     @Test
     void adminSettingsEndpointRejectsRegularUser() throws Exception {
-        String token = registerAndFetchAccessToken("user.settings@sportshub.local", "password123", "Settings User");
+        String token = registerAndFetchAccessToken("user.settings@sportshub.local", "Password123", "Settings User");
 
         mockMvc.perform(get("/api/admin/settings")
                         .header("Authorization", "Bearer " + token))
@@ -64,7 +64,7 @@ class SecurityIntegrationTest {
 
     @Test
     void adminSettingsGetNeverReturnsStripeSecret() throws Exception {
-        String token = registerAndFetchAccessToken("admin.settings@sportshub.local", "password123", "Settings Admin");
+        String token = registerAndFetchAccessToken("admin.settings@sportshub.local", "Password123", "Settings Admin");
 
         String updateBody = """
                 {
@@ -83,8 +83,10 @@ class SecurityIntegrationTest {
                     "stripeSecretKey": "sk_live_secret_should_not_echo"
                   },
                   "shipping": {
+                    "shippingEnabled": true,
                     "flatShippingFee": 8.99,
                     "freeShippingThreshold": 80.00,
+                    "expressShippingSurcharge": 12.99,
                     "deliveryRegions": ["United States"],
                     "estimatedDeliveryTime": "3-5 business days"
                   },
@@ -120,12 +122,14 @@ class SecurityIntegrationTest {
                         .content(updateBody))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.payments.stripeSecretConfigured").value(true))
+                .andExpect(jsonPath("$.payments.stripeReady").value(true))
                 .andExpect(jsonPath("$.payments", not(hasKey("stripeSecretKey"))));
 
         mockMvc.perform(get("/api/admin/settings")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.payments.stripeSecretConfigured").value(true))
+                .andExpect(jsonPath("$.payments.stripeReady").value(true))
                 .andExpect(jsonPath("$.payments", not(hasKey("stripeSecretKey"))));
     }
 

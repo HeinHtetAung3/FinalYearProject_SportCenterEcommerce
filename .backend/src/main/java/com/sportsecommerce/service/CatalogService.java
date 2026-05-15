@@ -12,6 +12,11 @@ public interface CatalogService {
     CatalogDtos.ProductResponse getProductById(Long productId);
 
     /**
+     * Admin / internal: includes hidden products (storefront may still 404 them).
+     */
+    CatalogDtos.ProductResponse getProductByIdForAdmin(Long productId);
+
+    /**
      * Same-category siblings by rating, then cross-category fillers — mirrors
      * the PDP related rail ({@code findMockRelated} on the frontend).
      */
