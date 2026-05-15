@@ -32,7 +32,8 @@ class SecurityIntegrationTest {
     @Test
     void ordersEndpointRequiresAuthentication() throws Exception {
         mockMvc.perform(get("/api/orders"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value("Authentication required. Sign in again."));
     }
 
     @Test
